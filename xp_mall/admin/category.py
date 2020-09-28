@@ -60,7 +60,7 @@ def edit_category(category_id):
             db.session.commit()
         except Exception as e:
             print(e)
-            current_app.logge.debug(e)
+            current_app.logger.debug(e)
             message = e
         else:
             return redirect(url_for("admin.manage_category"))
@@ -94,6 +94,6 @@ def get_cate():
     parent_id = parent_id if parent_id else None
     sub_cates = GoodsCategory.query.filter_by(parent_id=parent_id).all()
     cate_dicts = [(sub_cate.name, sub_cate.id) for sub_cate in sub_cates]
-    # print(cate_dicts)
+    print(cate_dicts)
     return jsonify(cate_dicts)
 #

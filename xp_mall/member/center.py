@@ -26,7 +26,7 @@ def cart_list():
 
 @member_module.route("/profile")
 def profile():
-    cart_list = Cart.query.filter_by(Cart.user_id == current_user.user_id).all()
+    cart_list = Cart.query.filter_by(user_id=current_user.user_id).all()
     print(cart_list)
     return ""
 
