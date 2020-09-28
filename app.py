@@ -18,7 +18,7 @@ from xp_mall.member import member_module
 
 from xp_mall.models.category import GoodsCategory
 from xp_mall.models.member import Guest
-
+from xp_mall.models import area
 from xp_mall.extensions import db, login_manager, csrf, ckeditor, moment, toolbar, migrate
 from xp_mall.extensions import whooshee, dropzone, alipay, wxpay
 from xp_mall.settings import config
@@ -219,3 +219,4 @@ def register_request_handlers(app):
 if __name__ == "__main__":
     app = create_app("development")
     app.run(host="127.0.0.1", port=5037, debug=True)
+
