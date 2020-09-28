@@ -78,7 +78,8 @@
                             }
 
                         } else {
-                            errors = JSON.parse(data)
+                            console.log("error!")
+                            errors = JSON.parse(JSON.stringify(data))
                             for (i in errors) {
                                 $('#' + i).parent().addClass('has-error')
                                 $('#' + i).next().html(errors[i])
