@@ -9,4 +9,4 @@ from xp_mall.mall.order import *
 
 @mall_module.context_processor
 def get_current_pos():
-    return {"current_module": "网站商城", "current_module_url": url_for(".index")}
+    return {"current_module": "商城", "current_module_url": url_for(".index")}

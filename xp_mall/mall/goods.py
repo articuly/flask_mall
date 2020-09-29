@@ -52,7 +52,7 @@ def show_goods(category_id, goods_id):
     category_tree = get_all_parent(goods.category_id)  #
     category_tree.sort(key=lambda x: x[1], reverse=False)
     categories = GoodsCategory.query.filter_by(id=category_tree[0][1]).order_by(GoodsCategory.order_id).first()
-    print(category_tree)
+    # print(category_tree)
     return render_template('mall/goods/detail.html', goods=goods,
                            category=categories, category_tree=category_tree,
                            )

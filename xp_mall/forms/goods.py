@@ -1,8 +1,5 @@
 # -*- coding=utf-8 -*-
-"""
-    :author: Luxp（平哥）
-    :url: http://python-xp.com
-"""
+
 from flask import request, g
 from flask_ckeditor import CKEditorField
 from flask_wtf import FlaskForm
