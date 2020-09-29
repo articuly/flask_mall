@@ -3,7 +3,6 @@
 from xp_mall.extensions import db
 
 
-# todo:在物流信息加入地区地址
 class Area(db.Model):
     place_id = db.Column(db.Integer, primary_key=True)
     place_name = db.Column(db.String(50))
