@@ -75,7 +75,7 @@
 
             $(".delete-btn").on("click", function (e) {
                 if (!confirm("确认删除吗")) {
-                    console.log($(this).parent().parent().remove())
+                    {#console.log($(this).parent().parent().remove())#}
                     return false
                 }
                 btn = $(this)
