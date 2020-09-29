@@ -12,7 +12,7 @@ class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     order_no = db.Column(db.String(50))
     subject = db.Column(db.String(100))
-    total_price = db.Column(db.FLOAT)
+    total_price = db.Column(db.DECIMAL)
     status = db.Column(db.String(10))
     seller = db.Column(db.String(50))
     buyer = db.Column(db.String(50))
@@ -28,11 +28,11 @@ class OrderGoods(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     goods_id = db.Column(db.Integer)
     order_id = db.Column(db.Integer, db.ForeignKey('order.id'))
-    price = db.Column(db.FLOAT)
-    order_price = db.Column(db.FLOAT)
+    price = db.Column(db.DECIMAL)
+    order_price = db.Column(db.DECIMAL)
     order_active = db.Column(db.Integer, default=None)
     amount = db.Column(db.Integer)
-    discount = db.Column(db.FLOAT)
+    discount = db.Column(db.DECIMAL)
 
     order = db.relationship('Order', back_populates='goods')
 

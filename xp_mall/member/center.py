@@ -58,7 +58,7 @@ def manage_orders(page):
         else:
             order_type = Order.create_time.desc()
         order_query = order_query.order_by(order_type)
-    print(order_query)
+    # print(order_query)
     pagination = order_query.paginate(
         page, current_app.config['XPMALL_MANAGE_GOODS_PER_PAGE'])
     condition = request.query_string.decode()
