@@ -32,7 +32,7 @@
 
             footer {
                 padding: 15px;
-                background: #333;
+                background: #8c8989;
                 text-align: center;
                 color: #fff;
             }
@@ -62,9 +62,9 @@
                 <span class="icon-bar"></span>
 
             </button>
-            <a href="" class="navbar-brand">平哥de店</a>
+            <a href="" class="navbar-brand">Flask商城</a>
         </div>
-        <div class="collapse navbar-collapse" id="navmenu">
+        <div class="collapse navbar-collapse" id="navmenu" style="background-color: #C1F48C;">
             <!-- 必须设置 navbar-nav-->
             <ul class="nav navbar-nav">
                 <li class="active"><a href="{{ url_for("mall.index") }}">网站首页</a></li>
@@ -74,8 +74,6 @@
                         <li><a href="{{ url_for("article_app.getArticleList",cate_id=cate.cate_id, page=1) }}">{{ cate.cate_name }}</a> </li>
                     {% endfor %}
                    <li><a href="{{ url_for("article_app.list") }}">文章管理</a></li>
-
-
 					#}
             </ul>
             <ul class="nav navbar-nav pull-right">
@@ -83,9 +81,16 @@
                     <li><a href="{{ url_for("auth.login") }}">登录</a></li>
                     <li><a href="{{ url_for("auth.register") }}">注册</a></li>
                 {% else %}
-                    <li><a href="{{ url_for("member.center_index") }}">{{ current_user.username }}</a></li>
-                    <li><a href="{{ url_for("member.cart_list") }}"><span
-                            class="glyphicon glyphicon-shopping-cart"></span></a></li>
+                    {% if current_user.username == 'articuly' %}
+                        <li><a href="{{ url_for('admin.index') }}">管理后台</a></li>
+                        <li><a href="{{ url_for("member.center_index") }}">{{ current_user.username }}</a></li>
+                        <li><a href="{{ url_for("member.cart_list") }}"><span
+                                class="glyphicon glyphicon-shopping-cart"></span></a></li>
+                    {% else %}
+                        <li><a href="{{ url_for("member.center_index") }}">{{ current_user.username }}</a></li>
+                        <li><a href="{{ url_for("member.cart_list") }}"><span
+                                class="glyphicon glyphicon-shopping-cart"></span></a></li>
+                    {% endif %}
                 {% endif %}
 
             </ul>
@@ -96,7 +101,6 @@
 
 
 {% block content %}
-
     每个页面的不同部分
 {% endblock %}
 
@@ -106,15 +110,15 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    网易微专业Python全栈课程&copy;2019版权所有
+                    网易微专业Python全栈工程师&copy;2020版权所有
                 </div>
             </div>
         </div>
         <nav>
             <ul class="nav nav-pills   ">
-                <li><a href="">关于网易</a></li>
+                <li><a href="">关于我们</a></li>
                 <li><a href="">网易微专业</a></li>
-                <li><a href="">关于平哥</a></li>
+                <li><a href="https://articuly.com" target="_blank">清心涟漪</a></li>
             </ul>
         </nav>
     </footer>
