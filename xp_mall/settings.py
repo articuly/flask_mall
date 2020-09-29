@@ -46,7 +46,7 @@ class BaseConfig(object):
     # DROPZONE_ALLOWED_FILE_TYPE = "image/*, .pdf"
 
     XPMALL_GOODS_PER_PAGE = 10
-    XPMALL_MANAGE_GOODS_PER_PAGE = 3
+    XPMALL_MANAGE_GOODS_PER_PAGE = 5
     XPMALL_SLOW_QUERY_THRESHOLD = 1
 
     XPMALL_UPLOAD_PATH = os.path.join(BASEDIR, 'uploads')

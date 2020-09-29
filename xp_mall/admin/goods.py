@@ -41,10 +41,11 @@ def manage_goods(page):
         else:
             order_type = Goods.create_time.desc()
         goods_query = goods_query.order_by(order_type)
-    print(goods_query)
+    # print(goods_query)
     pagination = goods_query.paginate(
         page, current_app.config['XPMALL_MANAGE_GOODS_PER_PAGE'])
     condition = request.query_string.decode()
+    # print(condition)
     return render_template('admin/goods/goods_list.html', page=page,
                            pagination=pagination, form=form,
                            condition=condition)
