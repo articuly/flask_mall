@@ -5,8 +5,7 @@ from flask import render_template, g, request, \
 from flask_login import login_required
 from xp_mall.admin import admin_module
 from xp_mall.extensions import db
-from xp_mall.forms.goods import AreaForm
-from xp_mall.models.goods import Goods
+from xp_mall.forms.area import AreaForm
 from xp_mall.models.area import Area
 
 """
@@ -31,8 +30,8 @@ def new_area():
         # 第一层级目录的父级为""
         # 使用0会发生约束完整性问题
         parent_id = form.parent_id.data if int(form.parent_id.data) else None
-        place_name = form.name.data
-        place_order = form.order.data
+        place_name = form.place_name.data
+        place_order = form.place_order.data
         area = Area(place_name=place_name, parent_id=parent_id, place_order=place_order)
         db.session.add(area)
         db.session.commit()
@@ -41,7 +40,7 @@ def new_area():
         return str(area.place_id)
     elif form.errors:
         return jsonify(form.errors)
-    return render_template('admin/area/crea_add.html', form=form)
+    return render_template('admin/area/area_add.html', form=form)
 
 
 @admin_module.route('/area/<int:place_id>/edit', methods=['GET', 'POST'])
@@ -52,9 +51,10 @@ def edit_area(place_id):
     area = Area.query.get_or_404(place_id)
     g.place_id = area.place_id
     g.place_name = area.place_name
+    print(area, g.place_id, g.place_name)
     if form.validate_on_submit():
         try:
-            area.name = form.place_name.data
+            area.place_name = form.place_name.data
             area.parent_id = form.parent_id.data
             area.place_order = form.place_order.data
             db.session.commit()
@@ -80,8 +80,10 @@ def edit_area(place_id):
 def delete_area():
     place_id = int(request.form['place_id'])
     area = Area.query.get_or_404(place_id)
+    print(place_id, area)
     try:
-        area.delete()
+        db.session.delete(area)
+        db.session.commit()
     except Exception as e:
         return "fail"
     return "ok"

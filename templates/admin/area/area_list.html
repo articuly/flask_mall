@@ -1,0 +1,68 @@
+{% extends "admin/admin_base.html" %}
+{% from "admin/area/area_list_item.html" import area_items %}
+{% block style %}
+
+    input[type='number']{
+    width: 100px;
+    }
+    .btn{
+    margin-right: 30px;
+
+    }
+    .cate_li {
+    height: auto;
+    line-height: 28px;
+    list-style-type: none;
+    }
+    .cate_li:before{
+    content:"|-- "
+    }
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="main col-md-12 col-lg-12 col-xs-12 col-sm-12">
+            <h3>地区列表 - <small><a href="{{ url_for("admin.new_area") }}">添加地区</a> </small></h3>
+            {% if message %}
+                <div class="alert alert-info" role="alert">
+                    {{ message }}
+                </div>
+            {% endif %}
+            {% if areas %}
+                <ul>
+                    {{ area_items(areas) }}
+                </ul>
+            {% else %}
+                <div class="tip"><h5>没有地区</h5></div>
+            {% endif %}
+        </div>
+    </div>
+    <script type="text/javascript">
+        var csrf_token = "{{ csrf_token() }}"
+
+        /**
+         * 删除分类
+         *
+         */
+        function delete_area(place_id) {
+            {# if (!confirm("删除分类同时会删除商品")) { #}
+            {#    return false} #}
+            console.log(this)
+            $.ajax({
+                url: "{{ url_for("admin.delete_area") }}",
+                type: "post",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("X-CSRFToken", csrf_token)
+                },
+                data: {place_id: place_id},
+                success: function (data) {
+                    if (data == "ok") {
+                        document.getElementById('li_' + place_id).remove()
+                    }
+                }
+
+            })
+
+        }
+    </script>
+
+{% endblock %}
