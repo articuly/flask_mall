@@ -1,5 +1,12 @@
 {% extends "base.html" %}
-
+{% block style %}
+    <style type="text/css">
+        .cart-btn {
+            height: 30px;
+            vertical-align: center;
+        }
+    </style>
+{% endblock %}
 {% block content %}
 
     <!-- 面包屑导航 -->
@@ -31,7 +38,10 @@
                                     </h4>
                                     <div class="media">
                                         <p>{{ goods.price }}</p>
-
+                                        <span class="float-left">
+                                            <button class="btn btn-primary cart-btn"
+                                                    data-url="{{ url_for("member.add_cart", goods_id=goods.goods_id) }}">加入购物车</button>
+                                        </span>
                                     </div>
                                 </div>
                             </li>
@@ -55,6 +65,27 @@
 
         </div>
     </div>
+    <script>
+        csrf_token = '{{ csrf_token() }}'
+        $(function () {
+            // 添加到购物车
+            $(".cart-btn").on("click", function (e) {
+                $.ajax({
+                    url: $(this).data("url"),
+                    type: "post",
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("X-CSRFToken", csrf_token)
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.result) {
+                            alert("添加成功")
+                        }
+                    }
+                })
+            })
+        })
+    </script>
 {% endblock %}
 
 
