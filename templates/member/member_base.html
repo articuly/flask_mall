@@ -3,6 +3,7 @@
         <meta charset="utf-8">
         <title></title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
         <link rel="stylesheet" type="text/css" href="{{ url_for("static", filename="css/bootstrap.css") }}"/>
         <link rel="stylesheet" type="text/css" href="{{ url_for("static", filename="css/bootstrap-theme.css") }}"/>
         <style type="text/css">
@@ -70,6 +71,7 @@
                 <li><a href="{{ url_for("member.cart_list") }}">我的购物车</a></li>
                 <li><a href="{{ url_for("member.profile") }}">我的资料</a></li>
                 <li><a href="{{ url_for("member.manage_orders") }}">我的订单</a></li>
+                <li><a href="{{ url_for("member.new_address") }}">我的地址</a></li>
             </ul>
 
             <ul class="nav navbar-nav pull-right">
