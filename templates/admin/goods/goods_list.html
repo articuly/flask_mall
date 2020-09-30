@@ -100,6 +100,7 @@
             $(".search-btn").on("click", function (event) {
                 if (!$("#category_id").val()) {
                     $("#category_id").val(parent_id)
+                    console.log(parent_id)
                 }
                 $("#search_form").submit()
             })
@@ -180,9 +181,7 @@
          */
         $("#search").on('click', function () {
             link_url = "{{ url_for(".manage_goods") }}/" + parent_id
-
             $(".mainbody").load($.trim(link_url))
-
         })
 
         $(function () {

@@ -18,13 +18,17 @@ def create_order():
     订单创建
     :return:
     '''
-    cart_list = Cart.query.filter_by(user_id=current_user.user_id).all()
-    total_price = get_total_price(cart_list)
-    form = AddressForm()
+    try:
+        cart_list = Cart.query.filter_by(user_id=current_user.user_id).all()
+        total_price = get_total_price(cart_list)
+        # print('total_price:', total_price)
+        form = AddressForm()
+    except Exception as e:
+        print(e)
     if form.validate_on_submit() and cart_list:
         order = Order(
             order_no=get_order_no(),
-            subject="平哥商城订单",
+            subject="测试商城订单",
             total_price=total_price,
             status=0,
             buyer=current_user.user_id,
@@ -54,6 +58,7 @@ def create_order():
             db.session.add(order)
             db.session.commit()
         except Exception as e:
+            print(e)
             db.session.rollback()
         else:
             return redirect(url_for(".pay_order", order_no=order.order_no))

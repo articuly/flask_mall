@@ -30,7 +30,7 @@ class OrderGoods(db.Model):
     order_id = db.Column(db.Integer, db.ForeignKey('order.id'))
     price = db.Column(db.DECIMAL)
     order_price = db.Column(db.DECIMAL)
-    order_active = db.Column(db.Integer, default=None)
+    order_active = db.Column(db.String(255), default=None)
     amount = db.Column(db.Integer)
     discount = db.Column(db.DECIMAL)
 

@@ -19,7 +19,7 @@ csrf = CSRFProtect()
 ckeditor = CKEditor()
 moment = Moment()
 toolbar = DebugToolbarExtension()
-migrate = Migrate()
+migrate = Migrate(compare_type=True)
 whooshee = Whooshee()
 dropzone = Dropzone()
 # 支付对象

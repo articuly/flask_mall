@@ -80,6 +80,7 @@
         $('.btn').on('click', function () {
             console.log("click")
             $("[name='payment']").val($(this).data('payment'))
+            console.log($("[name='payment']").val())
             $("#order_form").submit()
         })
 
