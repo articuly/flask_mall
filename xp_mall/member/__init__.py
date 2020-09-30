@@ -8,6 +8,7 @@ from xp_mall.member.center import *
 from xp_mall.member.cart import *
 from xp_mall.member.buy import *
 from xp_mall.member.auth import *
+from xp_mall.member.address import *
 from flask_login import login_required, current_user
 
 

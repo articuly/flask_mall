@@ -47,3 +47,11 @@ class OAuth(db.Model):
     authorized_info = db.Column(db.String(500))
     bind_to_username = db.Column(db.String(30))
     bind_date = db.Column(db.DateTime)
+
+
+class UserAddress(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id= db.Column(db.Integer, db.ForeignKey('member.user_id'))
+    receiver = db.Column(db.String(20))
+    mobile = db.Column(db.String(30))
+    address = db.Column(db.String(100))

@@ -55,7 +55,6 @@ class Logistics(db.Model):
     mobile = db.Column(db.String(30))
     address = db.Column(db.String(100))
     status = db.Column(db.String(100))
-    user_id = db.Column(db.Integer, db.ForeignKey('member.user_id'))
 
     order = db.relationship('Order')
-    user = db.relationship('Member')
+

@@ -61,3 +61,9 @@ class AddressForm(FlaskForm):
     mobile = StringField("电话", validators=[DataRequired()])
     address = StringField("详细地址", validators=[DataRequired()])
     payment = HiddenField("支付方式", validators=[DataRequired()])
+
+class UserAddressForm(FlaskForm):
+    receiver = StringField('收件人', validators=[DataRequired()])
+    mobile = StringField("电话", validators=[DataRequired()])
+    address = StringField("详细地址", validators=[DataRequired()])
+
