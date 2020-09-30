@@ -20,7 +20,7 @@ from xp_mall.models.category import GoodsCategory
 from xp_mall.models.member import Guest
 from xp_mall.models import area
 from xp_mall.models.goods import Goods
-from xp_mall.models.order import Order, OrderGoods
+from xp_mall.models.order import Order, OrderGoods, Logistics
 from xp_mall.extensions import db, login_manager, csrf, ckeditor, moment, toolbar, migrate
 from xp_mall.extensions import whooshee, dropzone, alipay, wxpay
 from xp_mall.settings import config

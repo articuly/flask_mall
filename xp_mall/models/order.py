@@ -26,7 +26,7 @@ class Order(db.Model):
 
 class OrderGoods(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    goods_id = db.Column(db.Integer)
+    goods_id = db.Column(db.Integer, db.ForeignKey('goods.goods_id'))
     order_id = db.Column(db.Integer, db.ForeignKey('order.id'))
     price = db.Column(db.DECIMAL)
     order_price = db.Column(db.DECIMAL)
@@ -35,6 +35,7 @@ class OrderGoods(db.Model):
     discount = db.Column(db.DECIMAL)
 
     order = db.relationship('Order', back_populates='goods')
+    goods = db.relationship('Goods')
 
 
 class Cart(db.Model):
@@ -54,5 +55,7 @@ class Logistics(db.Model):
     mobile = db.Column(db.String(30))
     address = db.Column(db.String(100))
     status = db.Column(db.String(100))
+    user_id = db.Column(db.Integer, db.ForeignKey('member.user_id'))
 
     order = db.relationship('Order')
+    user = db.relationship('Member')
