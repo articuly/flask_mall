@@ -45,7 +45,18 @@
                         订单总价:{{ total_price }}元
                         <hr>
                         <form action="{{ url_for("member.create_order") }}" id="order_form" method="post">
-
+                            <div class="form-group">
+                                <label for="address">选择地址：</label>
+                                <ul id="address_list">
+                                    {% for address in addresses %}
+                                        <li><label class="radio">
+                                            <input type="radio" name="address" id="add_{{ address.id }}"
+                                                   value="{{ address.receiver }}：{{ address.mobile }}：{{ address.address }}"/>
+                                            {{ address.receiver }}，{{ address.mobile }}，{{ address.address }}
+                                        </label></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
                             <div class="form-group">
                                 {{ form.receiver.label }}
                                 {{ form.receiver(class="form-control") }}
@@ -62,7 +73,6 @@
                                 {{ form.payment }}
                                 {{ form.csrf_token }}
                             </div>
-
                         </form>
                     </div>
                 </div>
@@ -77,6 +87,19 @@
     </div>
 
     <script>
+
+        $(document).ready(function () {
+            $('input[type=radio][name="address"]').change(function () {
+                var addr = $('input:radio[name="address"]:checked').val()
+                receiver = addr.split("：")[0]
+                mobile = addr.split("：")[1]
+                address = addr.split("：")[2]
+                console.log(receiver, mobile, address)
+                $('#receiver').val(receiver)
+                $('#mobile').val(mobile)
+                $('#address').val(address)
+            })
+        })
         $('.btn').on('click', function () {
             console.log("click")
             $("[name='payment']").val($(this).data('payment'))

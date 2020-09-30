@@ -9,6 +9,7 @@ from xp_mall.member import member_module
 from xp_mall.member.cart import empty
 from xp_mall.forms.member import AddressForm
 from xp_mall.models.order import Order, OrderGoods, Cart, Logistics
+from xp_mall.models.member import UserAddress
 from xp_mall.utils import get_pay_obj
 
 
@@ -18,13 +19,12 @@ def create_order():
     订单创建
     :return:
     '''
-    try:
-        cart_list = Cart.query.filter_by(user_id=current_user.user_id).all()
-        total_price = get_total_price(cart_list)
-        # print('total_price:', total_price)
-        form = AddressForm()
-    except Exception as e:
-        print(e)
+    addresses = UserAddress.query.filter(UserAddress.user_id == current_user.user_id).order_by(
+        UserAddress.id.desc()).all()
+    cart_list = Cart.query.filter_by(user_id=current_user.user_id).all()
+    total_price = get_total_price(cart_list)
+    print('total_price:', total_price)
+    form = AddressForm()
     if form.validate_on_submit() and cart_list:
         order = Order(
             order_no=get_order_no(),
@@ -62,7 +62,8 @@ def create_order():
             db.session.rollback()
         else:
             return redirect(url_for(".pay_order", order_no=order.order_no))
-    return render_template('member/order/buy.html', form=form, cart_list=cart_list, total_price=total_price)
+    return render_template('member/order/buy.html', addresses=addresses, form=form, cart_list=cart_list,
+                           total_price=total_price)
 
 
 @member_module.route('/pay_order/<order_no>', methods=['GET', 'POST'])
