@@ -1,0 +1,60 @@
+{% extends "member/member_base.html" %}
+{% block title -%}
+    - 创建收件信息
+{% endblock %}
+{% block style %}
+
+    body{
+    margin:0;
+    padding-top: 70px;
+    background: #fff;
+    }
+
+{% endblock %}
+
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="main col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-12">
+                <h2 class="text-center"><b>地址管理</b>
+                    <small><a href="{{ url_for("member.new_address") }}">添加地址</a> </small></h2>
+                <table class="table">
+                    <tr>
+                        <td>总页数:{{ pages }}/总地址数:{{ total }}</td>
+                    </tr>
+                </table>
+                <table class="table table-bordered">
+                    <tr>
+                        <th>地址ID</th>
+                        <th>收件人姓名</th>
+                        <th>收件人手机</th>
+                        <th>收件人地址</th>
+                        <th>操作</th>
+                    </tr>
+                    {% for address in addresses %}
+                        <tr>
+                            <td>{{ address.id }}</td>
+                            <td>{{ address.receiver }}</td>
+                            <td>{{ address.mobile }}</td>
+                            <td>{{ address.address }}</td>
+                            <td>
+                                <a href="{{ url_for("member.edit_address", address_id=address.id) }}">编辑</a>
+                                <a href="{{ url_for("member.delete_address", address_id=address.id) }}">删除</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                <ul class="pagination">
+                    {% for page in pageList %}
+                        {% if page!=None %}
+                            <li><a href="?page={{ page }}">{{ page }}</a></li>
+                        {% else %}
+                            <li><a href="#">...</a></li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

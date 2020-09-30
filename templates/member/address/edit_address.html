@@ -1,6 +1,6 @@
 {% extends "member/member_base.html" %}
 {% block title -%}
-    - 创建收件信息
+    - 编辑收件信息
 {% endblock %}
 {% block style %}
 
@@ -15,11 +15,11 @@
 
     <div class="container clearfix">
         <div class="panel panel-default">
-            <div class="panel-heading">创建收件信息</div>
+            <div class="panel-heading">编辑收件信息</div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <form action="{{ url_for("member.new_address") }}" id="address_form" method="post">
+                        <form action="" id="address_form" method="post">
                             <div class="form-group">
                                 {{ form.receiver.label }}
                                 {{ form.receiver(class="form-control") }}
@@ -33,7 +33,7 @@
                                 {{ form.address(class="form-control") }}
                                 {{ form.csrf_token }}
                             </div>
-                            <button type="submit" class="btn btn-primary address-btn">提交</button>
+                            <button type="submit" class="btn btn-primary address-btn">提交修改</button>
                         </form>
                     </div>
                 </div>
