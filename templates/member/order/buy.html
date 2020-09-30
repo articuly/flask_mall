@@ -3,7 +3,6 @@
     - 创建订单
 {% endblock %}
 {% block style %}
-
     body{
     margin:0;
     padding-top: 70px;
@@ -14,7 +13,6 @@
     }
 {% endblock %}
 {% block content %}
-
     <div class="container clearfix">
         <div class="panel panel-default">
             <div class="panel-heading">订单创建</div>
@@ -32,12 +30,10 @@
                                     <h4 class="media-heading">
                                         {{ cart.goods.goods_title }}
                                     </h4>
-
                                     <p>优惠价：<span class="price">{{ cart.goods.price }}</span>元
                                     </p>
                                     <p>购买数量：{{ cart.amount }} 件 <a href="{{ url_for('member.cart_list') }}">返回购物车</a>
                                     </p>
-
                                 </div>
                             </div>
                         {% endfor %}
@@ -106,7 +102,5 @@
             console.log($("[name='payment']").val())
             $("#order_form").submit()
         })
-
-
     </script>
 {% endblock %}
