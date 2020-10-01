@@ -3,13 +3,11 @@
 from flask import render_template, request, current_app, flash
 from flask import jsonify, json
 from flask_login import login_required
-
 from xp_mall.extensions import db
 from xp_mall.utils import redirect_back
 from xp_mall.admin import admin_module
 from xp_mall.models.goods import Goods
 from xp_mall.models.category import GoodsCategory
-
 from xp_mall.forms.goods import GoodsForm, SearchForm
 
 
