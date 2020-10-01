@@ -55,7 +55,6 @@ class WechatPay:
 
     def unifiedorder(self, params):
         """ 统一下单 """
-
         api = 'https://api.mch.weixin.qq.com/pay/unifiedorder'
         return self.common_api(api, params)
 
