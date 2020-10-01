@@ -6,6 +6,7 @@ from alipay.aop.api.AlipayClientConfig import AlipayClientConfig
 from alipay.aop.api.DefaultAlipayClient import DefaultAlipayClient
 from alipay.aop.api.FileItem import FileItem
 from alipay.aop.api.domain.AlipayTradeAppPayModel import AlipayTradeAppPayModel
+# 网页支付对象
 from alipay.aop.api.domain.AlipayTradePagePayModel import AlipayTradePagePayModel
 from alipay.aop.api.domain.AlipayTradePayModel import AlipayTradePayModel
 from alipay.aop.api.domain.GoodsDetail import GoodsDetail
@@ -14,6 +15,7 @@ from alipay.aop.api.domain.SettleInfo import SettleInfo
 from alipay.aop.api.domain.SubMerchant import SubMerchant
 from alipay.aop.api.request.AlipayOfflineMaterialImageUploadRequest import AlipayOfflineMaterialImageUploadRequest
 from alipay.aop.api.request.AlipayTradeAppPayRequest import AlipayTradeAppPayRequest
+# 网页支付请求
 from alipay.aop.api.request.AlipayTradePagePayRequest import AlipayTradePagePayRequest
 from alipay.aop.api.request.AlipayTradePayRequest import AlipayTradePayRequest
 from alipay.aop.api.response.AlipayOfflineMaterialImageUploadResponse import AlipayOfflineMaterialImageUploadResponse
@@ -31,9 +33,9 @@ if __name__ == '__main__':
     """
     alipay_client_config = AlipayClientConfig()
     alipay_client_config.server_url = 'https://openapi.alipay.com/gateway.do'
-    alipay_client_config.app_id = '[your app_id]'
-    alipay_client_config.app_private_key = '[your app private key]'
-    alipay_client_config.alipay_public_key = '[alipay public key]'
+    alipay_client_config.app_id = '2021001198627524'
+    alipay_client_config.app_private_key = 'MIIEpQIBAAKCAQEAuys0k4PSwrwNQNwS5YFuldJ7t08CKelXPihhDNCClKf39yVaVvrMjvu5kJdHfppIab996Eniu+P9xWk4mGt5QLRnGtBcwCDVgQzo6Yu1of0Ys6QHqjcm61OZ1LFR64niNU5nsNfe5YgcsjI1In2JUHEiNPedRUqEOv/37CWHFIuCv1TlD4F+BvEvM83RKq5riICCCBJAAVje1mXO6sCLsyJDbFFGQPe20bJg0q1+3iCTOGfJ2jH5RaISstbcfCXPzM0yOaxEhy4fbnGa2tD0jtwDBFS7Gs5xLifVHyphYH6wH6eKxKzcIyi0NqN2vw9mdnhWqARRb8b2gewdZraMwQIDAQABAoIBADhaZdYUVpyzKfphSH85XSZW3VDvxOMBknbwiWfmT6qaeBo9cNnHYVebit9x7OC9axgLw8jwlgekOX/6kkOx+Cv3JSP5oDNor1/Pl0DaA7HmFk3gET66pEkuPp6/VL7qIOWT2bxxAndxZ9JvM3hS+8jwhzATbZKzQOTStL6w/d69LquYjf5HrViY0nca0NEc26EhPfBtXwAFHNhYf6pF1Nlrmw2S6plbAocIppJl2uFpvOzwxP/aljeZe+HbKwLHOaK4MxVRv02arPCGNA0+gxAoE6KKYKRVMkIQIhQNu14v4VSpYvmA0MNiPUzLgIXL0JAv0rSwoDbQoMQYXL0cuJECgYEA3H1FDIPE3v+FNN+QyNcuB//06RWn5k+pjP2z4WB5VtC8XfSVOTWn0VfHcmxOy2Jk5gljDtT1LzwiE8JVabSjXW0bH7S9cLtonw+z7h1vu5T1MiKuMzTW7XY4Ck4IkcSjnZTzR2oRiinkdrMMc5TRMcFYLXE2XpW3/S1SG2axb+sCgYEA2VAitxajnMs/NEwS/46JaLJ3KalbDHSnhjCj6n6Hxp3JUmF/b1SekkLrU1lJaEvgpcee8EHOBH6vBRJakUTBi9RH3vepsdAa42WaK7wnJcrKsPvU4lEbZHyxaYK4eIeFwz0V1Md8ab08jQfBzxjaiT6/SWHwMBh6TI+yINvUdwMCgYEAw9Qi4pWZ4jFxvt8debPb91D21ZndUKnKPiYKgI6t1lR4KL6VVoV4Mm9S/iaB6RPP55vItiCgTz6KSaBdOhAs1EqWP5fIdXqN1lAdD8xnM2R+TfQNYf95MNjBty1NYSIT616in/ft8hd5CY/G7FTtY9KEHYAiuOkiy6NX/Gw+BdcCgYEA16lmekq2XnF6LR1eMU40YbnS9n6CxC603kBBPAMMHfkTBXWKsWLJ558PyWyvpBjBPeSIgCjeGqnaaW8YgFg6t9kY5lbkinlbZda8FLEqLKA/XTrevyb8x1HUA0Deb4cXIXXqx3qdppZNlCxhk3Q31MJ3tYzDgAeav4ZPobpn9R8CgYEAvikslWd2OB8jrZ2NMh7ovHMS+hRYeNHGkP2U9nfsVVO1XR0nUtdAwIgj/rrpcKFlg3MN5bIV9rfDMSUrjh2yLFu+S7Rq2bwgYkLg4vMTdh+AvvMRKyNGYOqqWY1f5p7A9jIsgVtc+GeSYePyd0F57NWj4R9IgxZbqEer6KLH2IQ='
+    alipay_client_config.alipay_public_key = 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiWMUFAovq02SvXKyQPE20tnX9+irJtNDZqZnQCjiBULf9+laP/xeLopV+Nr2Dy6fYqfFFQ2jIqqbf/8ZXfq5tBCkwZ2ta+0mLVXbn0ZgUzUqLMVMl4SAGlJ7kgatUD0V+fdPXwhOwwX/r99wEZyBJalt/dhAzEZyS0KGgcVRzTyzpj6PEgvPwrpDzetTs3/Ot3M/aukt/h1XcJoRFbHOz9Cu3vwerzX018aHynUXR2tJHY+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAl0zdZkgculoIuYvoAXFUmTaT5MTB3CYVdLMSBH7THC6Mo6tW8x/QW0QcVd82CC2s3R1mPS02qhkwQaleQAEWx0htXbmPq/J4eonUdIK1Gbp/rvB9eAyvVBTdUHJz7MT5bYjv8dDxr2ZfNo6EKM6ndFlMHp/scHaMnQqmVJgZSgi+gUkQwjDP/jR0rEkWF01YTcCrxIxTyoVJsfG46PO2dia4Ip45IBRhhO7QrUL9OIexgr5WH0O0vMvKYay0ParXiVL7U1E5d6pUUPDJwbTu7Nz6D4OiVrbqEwz7sTH1979sIPTEopRWcK4Y/BEwNTiba/Wa2PWWDjPxkeqzIQqkCwIDAQAB'
 
     """
     得到客户端对象。
@@ -119,8 +121,8 @@ if __name__ == '__main__':
     request.image_name = "我的店"
     request.image_type = "jpg"
     # 设置文件参数
-    f = open("/Users/foo/Downloads/IMG.jpg", "rb")
-    request.image_content = FileItem(file_name="IMG.jpg", file_content=f.read())
+    f = open(r"F:\Pictures\starnight.jpg", "rb")
+    request.image_content = FileItem(file_name="starnight.jpg", file_content=f.read())
     f.close()
     response_content = None
     try:

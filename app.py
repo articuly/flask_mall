@@ -220,5 +220,4 @@ def register_request_handlers(app):
 
 if __name__ == "__main__":
     app = create_app("development")
-    app.run(host="127.0.0.1", port=5037, debug=True)
-
+    app.run(host="127.0.0.1", port=8126, debug=True)

@@ -14,7 +14,7 @@ else:
     prefix = 'sqlite:////'
 
 # 支付完成后回调域名
-DOMAIN = "114.218.2.99:8000"
+DOMAIN = "test.articuly.com:7777"
 
 
 class BaseConfig(object):
@@ -76,7 +76,7 @@ class DevelopmentConfig(BaseConfig):
         "ALIPAY_SIGN_TYPE": "RSA2",
         # appid 必填
         # appid与私钥，公钥配套，多个appid不要搞混
-        "ALIPAY_APP_ID": '',
+        "ALIPAY_APP_ID": '2016102500757966',
         # 支付宝密钥证书路径
         "ALIPAY_PRIVATE_KEY_FILE": os.path.join(basedir, "alipay_cert/alipay_private_key"),
         "ALIPAY_PUB_KEY_FILE": os.path.join(basedir, "alipay_cert/alipay_public_key"),
