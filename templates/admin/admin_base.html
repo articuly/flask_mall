@@ -1,114 +1,257 @@
-{% block head %}
-    <head>
-        <meta charset="utf-8">
-        <title></title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block title %}
+        <title>清心涟漪 | 管理后台</title>
+    {% endblock %}
+    {% block head %}
+        <meta charset="UTF-8">
+        <meta name="description" content="清心涟漪Flask框架测试的商城网站">
+        <meta name="keywords" content="清心涟漪, Flask, 商城, 购物, 数码产品, 衣服, 护肤品">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <!-- Google Font -->
+        <link href="https://fonts.googleapis.com/css?family=Muli:300,400,500,600,700,800,900&display=swap"
+              rel="stylesheet">
+
+        <!-- Css Styles -->
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-        <link rel="stylesheet" type="text/css" href="{{ url_for("static", filename="css/bootstrap.css") }}"/>
-        <link rel="stylesheet" type="text/css" href="{{ url_for("static", filename="css/bootstrap-theme.css") }}"/>
+        <link rel="stylesheet" href="{{ url_for("static", filename="css/bootstrap.min.css") }}" type="text/css">
+        <link rel="stylesheet" href="{{ url_for("static", filename="css/font-awesome.min.css") }}" type="text/css">
+        <link rel="stylesheet" href="{{ url_for("static", filename="css/themify-icons.css") }}" type="text/css">
+        <link rel="stylesheet" href="{{ url_for("static", filename="css/elegant-icons.css") }}" type="text/css">
+        <link rel="stylesheet" href="{{ url_for("static", filename="css/owl.carousel.min.css") }}" type="text/css">
+        <link rel="stylesheet" href="{{ url_for("static", filename="css/nice-select.css") }}" type="text/css">
+        <link rel="stylesheet" href="{{ url_for("static", filename="css/jquery-ui.min.css") }}" type="text/css">
+        <link rel="stylesheet" href="{{ url_for("static", filename="css/slicknav.min.css") }}" type="text/css">
+        <link rel="stylesheet" href="{{ url_for("static", filename="css/style.css") }}" type="text/css">
+
         <style type="text/css">
-            body {
-                padding-top: 52px;
+            a:hover {
+                color: #00a8c6;
             }
-
-            .media a > img {
-                width: 120px;
-
-            }
-
-            #left_menu > li {
-                width: 100%;
-            }
-
-            .hot_articles .list-group {
-                box-shadow: 0 0 0;
-            }
-
-            .hot_articles .list-group-item {
-                border: 0;
-                padding-left: 0;
-            }
-
-            footer {
-                padding: 15px;
-                background: #8c8989;
-                text-align: center;
-                color: #fff;
-            }
-
-            footer nav {
-                margin: auto;
-                width: 300px;
-            }
-
-            {% block style %}
-
-            {% endblock %}
         </style>
-        <script type="text/javascript" src="{{ url_for("static" ,filename="js/jquery-3.2.1.js") }}"></script>
-    </head>
-{% endblock %}
 
+        <script type="text/javascript" src="{{ url_for("static" ,filename="js/jquery-3.3.1.min.js") }}"></script>
+    {% endblock %}
+    {% block style %}
+    {% endblock %}
+</head>
+<body>
 {% block nav %}
-    <nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
 
-        <!-- 手机屏幕显示 -->
-        <div class="navbar-header" style="background-color: #C1F48C;">
-            <button type="button" class="navbar-toggle" data-toggle="collapse"
-                    data-target="#navmenu">
-                <span class="sr-only">展开导航</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-
-            </button>
-            <a href="" class="navbar-brand">Flask商城</a>
-        </div>
-        <div class="collapse navbar-collapse" id="navmenu" style="background-color: #C1F48C;">
-            <!-- 必须设置 navbar-nav-->
-
-            <ul class="nav navbar-nav">
-                <li><a href="{{ url_for("index") }}">返回网站首页</a></li>
-
-                {# <li><a href="{{ url_for("admin.userList") }}">用户管理</a></li>
-					#}
-                <li><a href="{{ url_for("admin.manage_category") }}">分类管理</a></li>
-                <li><a href="{{ url_for("admin.manage_goods") }}">商品管理</a></li>
-                <li><a href="{{ url_for("admin.manage_orders") }}">订单管理</a></li>
-                <li><a href="{{ url_for("admin.manage_area") }}">地区管理</a></li>
-            </ul>
-
-            <ul class="nav navbar-nav pull-right">
-                <li><a href="#">{{ username }}</a></li>
-                <li><a href="{{ url_for("member.logout") }}">logout</a></li>
-            </ul>
-
-        </div>
-    </nav>
-
-{% endblock %}
-
-{% block content %}
-    管理框架
-{% endblock %}
-
-{% block footer %}
-    <footer>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    网易微专业Python全栈工程师&copy;2020版权所有
+    <!-- Header Section Begin -->
+    <header class="header-section">
+        <div class="header-top">
+            <div class="container">
+                <div class="ht-left">
+                    <div class="mail-service">
+                        <i class=" fa fa-envelope"></i>
+                        articuly@gmail.com
+                    </div>
+                    <div class="phone-service">
+                        <i class=" fa fa-phone"></i>
+                        +86 123 4567 8901
+                    </div>
+                </div>
+                <div class="ht-right">
+                    {% if not current_user.username %}
+                        <span class="login-panel">
+                            <a href="{{ url_for('auth.login') }}">
+                                <i class="fa fa-user-circle"></i>您好，请登陆</a>　
+                            <a href="{{ url_for('auth.register') }}">
+                                <i class="fa fa-user-plus"></i>注册</a>
+                        </span>
+                    {% else %}
+                        {% if current_user.username == 'articuly' %}
+                            <span class="login-panel">
+                                <a href="{{ url_for('admin.index') }}">
+                                    <i class="fa fa-cog"></i>管理后台</a>　
+                                <a href="{{ url_for("member.center_index") }}">
+                                    <i class="fa fa-user-circle"></i>{{ current_user.username }}</a>　
+                                <a href="{{ url_for("member.logout") }}">
+                                    <i class="fa fa-sign-out"></i>登出</a>
+                            </span>
+                        {% else %}
+                            <span class="login-panel">
+                                <a href="{{ url_for("member.center_index") }}">
+                                    <i class="fa fa-user-circle"></i>{{ current_user.username }}</a>　
+                                <a href="{{ url_for("member.logout") }}">
+                                    <i class="fa fa-sign-out"></i>登出</a>
+                            </span>
+                        {% endif %}
+                    {% endif %}
+                    <div class="top-social">
+                        <a href="https://github.com/articuly"><i class="ti-github"></i></a>
+                        <a href="https://articuly.com/"><i class="ti-wordpress"></i></a>
+                        <a href="https://weibo.com/1805318094/profile"><i class="ti-twitter-alt"></i></a>
+                        <a href="https://www.linkedin.com/in/articulylin"><i class="ti-linkedin"></i></a>
+                    </div>
                 </div>
             </div>
         </div>
-        <nav>
-            <ul class="nav nav-pills   ">
-                <li><a href="">关于我们</a></li>
-                <li><a href="">网易微专业</a></li>
-                <li><a href="https://articuly.com" target="_blank">清心涟漪</a></li>
-            </ul>
-        </nav>
-    </footer>
-
-    <script type="text/javascript" src="{{ url_for("static" ,filename="js/bootstrap.js") }}"></script>
+        <div class="container">
+            <div class="inner-header">
+                <div class="row">
+                    <div class="col-lg-2 col-md-2">
+                        <div class="logo">
+                            <a href="./index.html">
+                                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-7 col-md-7">
+                        <div class="advanced-search">
+                            <button type="button" class="category-btn">　所 有 商 品　</button>
+                            <div class="input-group">
+                                <input type="text" placeholder="您需要什么？">
+                                <button type="button"><i class="ti-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 text-right col-md-3">
+                        {% if current_user.username %}
+                            <ul class="nav-right">
+                                <li class="cart-icon">
+                                    <a href="{{ url_for("member.cart_list") }}">
+                                        <i class="icon_bag_alt"></i>
+                                        <span>3</span>
+                                    </a>
+                                </li>
+                                <li class="cart-price">$150.00</li>
+                            </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="nav-item">
+            <div class="container">
+                <div class="nav-depart">
+                    <div class="depart-btn">
+                        <i class="ti-menu"></i>
+                        <span>所有商品分类</span>
+                        <ul class="depart-hover">
+                            <li><a href="#">Women’s Clothing</a></li>
+                            <li><a href="#">Men’s Clothing</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <nav class="nav-menu mobile-menu">
+                    <ul>
+                        <li><a href="{{ url_for("index") }}">返回首页</a></li>
+                        {# <li><a href="{{ url_for("admin.userList") }}">用户管理</a></li> #}
+                        <li><a href="{{ url_for("admin.manage_category") }}">分类管理</a></li>
+                        <li><a href="{{ url_for("admin.manage_goods") }}">商品管理</a></li>
+                        <li><a href="{{ url_for("admin.manage_orders") }}">订单管理</a></li>
+                        <li><a href="{{ url_for("admin.manage_area") }}">地区管理</a></li>
+                    </ul>
+                </nav>
+                <div id="mobile-menu-wrap"></div>
+            </div>
+        </div>
+    </header>
+    <!-- Header End -->
 {% endblock %}
+
+{% block content %}
+    管理后台
+{% endblock %}
+
+{% block footer %}
+    <!-- Footer Section Begin -->
+    <footer class="footer-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="footer-left">
+                        <div class="footer-logo">
+                            <a href="{{ url_for("index") }}"><img
+                                    src="{{ url_for('static', filename='img/footer-logo.png') }}" alt=""></a>
+                        </div>
+                        <ul>
+                            <li>地址: 中华人民共和国广东省广州市</li>
+                            <li>手机: +86 123 4567 8901</li>
+                            <li>邮箱: articuly@gmail.com</li>
+                        </ul>
+                        <div class="footer-social">
+                            <a href="https://github.com/articuly"><i class="fa fa-github"></i></a>
+                            <a href="https://articuly.com/"><i class="fa fa-wordpress"></i></a>
+                            <a href="https://weibo.com/1805318094/profile"><i class="fa fa-twitter"></i></a>
+                            <a href="https://www.linkedin.com/in/articulylin"><i class="fa fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 offset-lg-1">
+                    <div class="footer-widget">
+                        <h5>相关信息</h5>
+                        <ul>
+                            <li><a href="#">关于我们</a></li>
+                            <li><a href="#">联系我们</a></li>
+                            <li><a href="#">快递时效</a></li>
+                            <li><a href="#">服务政策</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="footer-widget">
+                        <h5>我的账号</h5>
+                        <ul>
+                            <li><a href="{{ url_for("member.center_index") }}">个人中心</a></li>
+                            <li><a href="{{ url_for("member.profile") }}">我的资料</a></li>
+                            <li><a href="{{ url_for("member.address_list") }}">我的地址</a></li>
+                            <li><a href="{{ url_for("member.manage_orders") }}">购物车</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="newslatter-item">
+                        <h5>订阅我们最新的消息</h5>
+                        <p>通过邮件来获得最新上架商品和促销商品的信息</p>
+                        <form action="#" class="subscribe-form">
+                            <input type="text" placeholder="您的邮箱">
+                            <button type="button">订阅</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copyright-reserved">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="copyright-text">
+                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                            Copyright &copy;<script>document.write(new Date().getFullYear());</script>
+                            版权所有，侵权必究 | 模板由<i class="fa fa-heart-o" aria-hidden="true"></i><a
+                                href="https://colorlib.com"
+                                target="_blank">Colorlib</a>提供
+                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        </div>
+                        <div class="payment-pic">
+                            <img src="{{ url_for('static', filename='img/payment-method.png') }}" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer Section End -->
+
+    <!-- Js Plugins -->
+    <script type="text/javascript" src="{{ url_for("static" ,filename="js/bootstrap.min.js") }}"></script>
+    <script type="text/javascript" src="{{ url_for("static" ,filename="js/jquery-ui.min.js") }}"></script>
+    <script type="text/javascript" src="{{ url_for("static" ,filename="js/jquery.countdown.min.js") }}"></script>
+    <script type="text/javascript" src="{{ url_for("static" ,filename="js/jquery.nice-select.min.js") }}"></script>
+    <script type="text/javascript" src="{{ url_for("static" ,filename="js/jquery.zoom.min.js") }}"></script>
+    <script type="text/javascript" src="{{ url_for("static" ,filename="js/jquery.dd.min.js") }}"></script>
+    <script type="text/javascript" src="{{ url_for("static" ,filename="js/jquery.slicknav.js") }}"></script>
+    <script type="text/javascript" src="{{ url_for("static" ,filename="js/owl.carousel.min.js") }}"></script>
+    <script type="text/javascript" src="{{ url_for("static" ,filename="js/main.js") }}"></script>
+{% endblock %}
+</body>
+</html>

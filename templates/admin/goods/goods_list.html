@@ -1,10 +1,30 @@
 {% extends "admin/admin_base.html" %}
-{% block content %}
+{% block title %}
+    <title>清心涟漪 | 管理后台 | 商品管理</title>
+{% endblock %}
 
-    <div class="container">
-        <div class="row">
-            <div class="main col-md-12 col-lg-12 col-xs-12 col-sm-12">
-                <h3>商品管理 - <small><a href="{{ url_for("admin.new_goods") }}">添加商品</a> </small></h3>
+{% block  content %}
+    <!-- Breadcrumb Section Begin -->
+    <div class="breacrumb-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-text">
+                        <a href="{{ url_for("index") }}"><i class="fa fa-home"></i> 主页</a>
+                        <span><a href="{{ url_for("admin.index") }}"> 管理后台</a></span>
+                        <span><a href="{{ url_for("admin.manage_goods") }}"> 商品管理</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb Form Section Begin -->
+
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="main col-xl-8 col-lg-9 col-md-10 col-sm-11 col-12">
+                <h2 class="text-center"><b>商品管理</b> -
+                    <small><small><a href="{{ url_for("admin.new_goods") }}">添加商品</a></small></small></h2>
                 <div class="page-header">
                     <form action="{{ url_for("admin.manage_goods",page=1) }}" method="get" class="form-horizontal"
                           id="search_form">
@@ -13,28 +33,23 @@
                             {{ form.keyword.label }}
                             {{ form.keyword }}
                         </div>
-
                         <div class="form-group">
                             {{ form.order_type.label }}
                             {{ form.order_type }}
                         </div>
-
                         <div class="form-group ">
                             {{ form.category_id }}
                             <input type="button" name="search" class="btn btn-primary pull-right search-btn"
                                    value="立即搜索">
                         </div>
-
                     </form>
-
-                    <h3>商品总数
-                        <small class="text-muted">{{ pagination.total }}</small>
-                    </h3>
+                    <br>
+                    <hr>
+                    <h3>商品总数：<small class="text-muted">{{ pagination.total }}</small></h3>
                 </div>
                 {% if pagination.total > 0 %}
-
-                    <table class="table">
-                        <thead>
+                    <table class="table table-bordered">
+                        <thead class="thead-dark">
                         <tr>
                             <th>编号</th>
                             <th>商品名称</th>
@@ -54,11 +69,10 @@
                                 </td>
                                 <td>
                                     <a class="btn btn-info btn-sm edit-btn"
-                                       href="{{ url_for('.edit_goods', goods_id=goods.goods_id) }}"
-                                       target="_blank">修改</a>
+                                       href="{{ url_for('admin.edit_goods', goods_id=goods.goods_id) }}">修改</a>
                                     <button type="submit" class="btn btn-danger btn-sm delete-btn"
-                                            onclick="return confirm('Are you sure?');"
-                                            data-href="{{ url_for('.delete_goods', goods_id=goods.goods_id) }}">删除
+                                            onclick="return confirm('确定删除商品吗?');"
+                                            data-href="{{ url_for('admin.delete_goods', goods_id=goods.goods_id) }}">删除
                                     </button>
 
                                 </td>
@@ -69,22 +83,24 @@
                             <input type="button" class="btn btn-primary del-all" value="删除选中">
                         </td>
                     </table>
-                    <div class="page-footer">
+                    <nav aria-label="Page navigation example">
                         <ul class="pagination">
                             {% for page in pagination.iter_pages() %}
                                 {% if page!=None %}
-                                    <li>
-                                        <a href="{{ url_for("admin.manage_goods", page=page) }}?{{ condition }}">{{ page }}</a>
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                           href="{{ url_for("admin.manage_goods", page=page) }}?{{ condition }}">{{ page }}</a>
                                     </li>
                                 {% else %}
-                                    <li><a href="#">...</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">...</a></li>
                                 {% endif %}
                             {% endfor %}
                         </ul>
-                    </div>
+                    </nav>
                 {% else %}
                     <div class="tip"><h5>暂无商品</h5></div>
                 {% endif %}
+                <br>
             </div>
         </div>
     </div>

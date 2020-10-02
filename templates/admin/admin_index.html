@@ -1,8 +1,28 @@
 {% extends "admin/admin_base.html" %}
 
-{% block content %}
+{% block title %}
+    <title>清心涟漪 | 管理后台</title>
+{% endblock %}
 
-    <h1>欢迎进入Flask-Mall后台管理系统</h1>
-    <h2 align="center">欢迎管理员 {{ current_user.username }}</h2>
+{% block  content %}
+    <!-- Breadcrumb Section Begin -->
+    <div class="breacrumb-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-text">
+                        <a href="{{ url_for("index") }}"><i class="fa fa-home"></i> 主页</a>
+                        <span><a href="{{ url_for("admin.index") }}"> 管理后台</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb Form Section Begin -->
 
+    <br/>
+    <h2 align="center">欢迎管理员 {{ current_user.username }} 进入管理后台</h2>
+    <br/>
+    <h3 align="center">祝您节日快乐！</h3>
+    <br/>
 {% endblock %}

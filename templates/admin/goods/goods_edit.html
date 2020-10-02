@@ -1,6 +1,9 @@
 {% extends "admin/admin_base.html" %}
-{% block content %}
+{% block title %}
+    <title>清心涟漪 | 管理后台 | 修改商品</title>
+{% endblock %}
 
+{% block style %}
     <link rel="stylesheet" href="{{ url_for("static", filename="css/dropzone.min.css") }}">
     {{ dropzone.load_css() }}
     {{ dropzone.load_js() }}
@@ -32,12 +35,30 @@
             cursor: hand;
         }
     </style>
+{% endblock %}
 
-    <div class="container">
-        <div class="row">
-            <div class="main col-md-12 col-lg-12 col-xs-12 col-sm-12">
-                <h3>修改商品 - <small><a href="{{ url_for("admin.manage_goods") }}">商品列表</a> </small></h3>
+{% block content %}
+    <!-- Breadcrumb Section Begin -->
+    <div class="breacrumb-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-text">
+                        <a href="{{ url_for("index") }}"><i class="fa fa-home"></i> 主页</a>
+                        <span><a href="{{ url_for("admin.index") }}"> 管理后台</a></span>
+                        <span><a href="{{ url_for("admin.manage_goods") }}"> 商品管理</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb Form Section Begin -->
 
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="main col-xl-8 col-lg-9 col-md-10 col-sm-11 col-12">
+                <h2 class="text-center"><b>修改商品</b> -
+                    <small><small><a href="{{ url_for("admin.manage_goods") }}">商品列表</a></small></small></h2>
                 <div class="form-group" id="category_select"></div>
                 <div class="form-group">
                     当前商品分类为: {{ current_cate }}
@@ -46,12 +67,10 @@
                     {{ form.title.label }}
                     {{ form.title(class="form-control") }}
                 </div>
-
                 <div class="form-group">
                     {{ form.price.label }}
                     {{ form.price(class="form-control") }}
                 </div>
-
                 <div class="form-group">
                     <ul id="pre_ul">
 
@@ -60,13 +79,10 @@
                     {{ form.thumb }}
                     {{ dropzone.create(action="admin.upload_thumb") }}
                 </div>
-
-
                 <div class="form-group">
                     <label for="body" class="control-label">内容:</label>
                     {{ form.body(class="form-controle") }}
                 </div>
-
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary edit-btn">确认修改</button>
                 </div>
@@ -94,7 +110,6 @@
                 $("#pre_ul").on("click", "span", function (e) {
                     pic_array[$(this).data("index")] = null
                     $(this).parent().remove()
-
                 })
 
                 function edit_goods() {
@@ -127,15 +142,9 @@
                             document.location.reload()
                         }
                     })
-
                 }
-
                 $('.edit-btn').on('click', edit_goods)
-
             })
-
-
     </script>
-
     <script type="text/javascript" src="{{ url_for('static', filename='js/category.js') }}"></script>
 {% endblock %}

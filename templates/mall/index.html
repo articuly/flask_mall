@@ -8,15 +8,6 @@
     </style>
 {% endblock %}
 {% block content %}
-
-    <!-- 面包屑导航 -->
-    <ul class="breadcrumb">
-        <li><a href="{{ current_module_url }}">首页</a></li>
-        <li><a href="{{ current_module_url }}">{{ current_module }}</a></li>
-
-    </ul>
-    <!-- 分页导航 -->
-
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-2 hidden-xs hidden-sm">
@@ -51,7 +42,7 @@
 
                 </ul>
 
-                <!--  -->
+                <!-- 分页 -->
                 <ul class="pagination">
                     {% for page in pageList %}
                         {% if page!=None %}

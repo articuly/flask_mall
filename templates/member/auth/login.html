@@ -1,39 +1,62 @@
 {% extends 'base.html' %}
-{% block title %}Login{% endblock %}
 
-{% block content %}
-    <div class="container h-100">
-        <div class="row h-100 page-header justify-content-center align-items-center">
-            <h1>Login - 测试商城</h1>
-        </div>
-        <div class="row h-100 justify-content-center align-items-center">
-            <form action="" method="post" class="form col-6" role="form">
-                {{ form.csrf_token }}
-                <div class="form-group">
-                    {{ form.username.label }}
-                    {{ form.username(class='form-control') }}
-                </div>
-
-                <div class="form-group">
-                    {{ form.password.label }}
-                    {{ form.password(class='form-control') }}
-                </div>
-                <div class="form-group form-check">
-                    <label class="form-check-label">
-                        {{ form.remember(class="form-check-input") }} Remember me
-                    </label>
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-primary" type="submit">
-                        立即登陆
-                    </button>
-                </div>
-            </form>
-
-
-        </div>
-    </div>
-
+{% block title %}
+    <title>清心涟漪 | 登陆</title>
 {% endblock %}
 
-{% block footer %}{% endblock %}
+{% block content %}
+    <!-- Breadcrumb Section Begin -->
+    <div class="breacrumb-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-text">
+                        <a href="{{ url_for("index") }}"><i class="fa fa-home"></i> 主页</a>
+                        <span><a href="{{ url_for("auth.login") }}"> 登陆</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb Form Section Begin -->
+
+    <!-- Register Section Begin -->
+    <div class="register-login-section spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 offset-lg-3">
+                    <div class="login-form">
+                        <h2>用户登陆</h2>
+                        <form action="" method="post" role="form">
+                            {{ form.csrf_token }}
+                            <div class="group-input">
+                                {{ form.username.label }}
+                                {{ form.username(class='form-control') }}
+                            </div>
+                            <div class="group-input">
+                                {{ form.password.label }}
+                                {{ form.password(class='form-control') }}
+                            </div>
+                            <div class="group-input gi-check">
+                                <div class="gi-more">
+                                    <label for="save-pass">
+                                        {{ form.remember(class="form-check-input") }} 记住我
+                                        <input type="checkbox" id="save-pass">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    {# <a href="#" class="forget-pass">忘记密码</a> #}
+                                </div>
+                            </div>
+                            <button type="submit" class="site-btn login-btn">立即登陆</button>
+                        </form>
+                        <div class="switch-login">
+                            <a href="./register.html" class="or-login">注册一个新账号</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Register Form Section End -->
+{% endblock %}
+
