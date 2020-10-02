@@ -14,5 +14,5 @@ from xp_mall.member import member_module
 @member_module.route('/logout')
 def logout():
     logout_user()
-    flash('Logout success.', 'info')
+    flash('顺利登出', 'info')
     return redirect_back()

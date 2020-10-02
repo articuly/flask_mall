@@ -30,21 +30,20 @@ def is_admin():
 def index():
     return render_template("admin/admin_index.html")
 
-
-@admin_module.route('/settings', methods=['GET', 'POST'])
-@login_required
-def settings():
-    form = SettingForm()
-    if form.validate_on_submit():
-        current_user.name = form.name.data
-        current_user.blog_title = form.blog_title.data
-        current_user.blog_sub_title = form.blog_sub_title.data
-        current_user.about = form.about.data
-        db.session.commit()
-        flash('Setting updated.', 'success')
-        return redirect(url_for('blog.index'))
-    form.name.data = current_user.name
-    form.blog_title.data = current_user.blog_title
-    form.blog_sub_title.data = current_user.blog_sub_title
-    form.about.data = current_user.about
-    return render_template('admin/settings.html', form=form)
+# @admin_module.route('/settings', methods=['GET', 'POST'])
+# @login_required
+# def settings():
+#     form = SettingForm()
+#     if form.validate_on_submit():
+#         current_user.name = form.name.data
+#         current_user.blog_title = form.blog_title.data
+#         current_user.blog_sub_title = form.blog_sub_title.data
+#         current_user.about = form.about.data
+#         db.session.commit()
+#         flash('Setting updated.', 'success')
+#         return redirect(url_for('blog.index'))
+#     form.name.data = current_user.name
+#     form.blog_title.data = current_user.blog_title
+#     form.blog_sub_title.data = current_user.blog_sub_title
+#     form.about.data = current_user.about
+#     return render_template('admin/settings.html', form=form)

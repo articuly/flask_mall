@@ -76,9 +76,9 @@ def edit_order(order_id):
     #                        current_cate=current_cate)
 
 
-@admin_module.route('/goods/delete/<int:goods_id>', methods=['POST'])
+@admin_module.route('/order/delete/<int:order_id>', methods=['POST'])
 def delete_order(order_id):
     order = Order.query.get_or_404(order_id)
-    order.status = -1
+    order.status = 4
     db.session.commit()
     return "ok"

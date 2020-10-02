@@ -22,11 +22,11 @@ class LoginForm(FlaskForm):
 
 
 class RegisterForm(FlaskForm):
-    username = StringField('UserName',
+    username = StringField('用户名',
                            validators=[DataRequired(), Length(1, 20), Regexp('^[a-zA-Z0-9]*$', message='字母与数字组成')])
-    email = StringField("Email", validators=[DataRequired(), Length(1, 64), Email()])
-    password = PasswordField('Password', validators=[DataRequired(), Length(6, 30), EqualTo('password2')])
-    password2 = PasswordField('Confirm Password', validators=[DataRequired()])
+    email = StringField("电子邮箱", validators=[DataRequired(), Length(1, 64), Email()])
+    password = PasswordField('密码', validators=[DataRequired(), Length(6, 30), EqualTo('password2')])
+    password2 = PasswordField('确认密码', validators=[DataRequired()])
     Submit = SubmitField()
 
     def validate_email(self, field):

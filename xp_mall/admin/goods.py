@@ -1,5 +1,6 @@
 # -*- coding=utf-8 -*-
 
+import datetime
 from flask import render_template, request, current_app, flash
 from flask import jsonify, json
 from flask_login import login_required
@@ -65,7 +66,8 @@ def new_goods():
                       main_pic=main_pic,
                       category_id=category_id,
                       detail=body,
-                      price=price)
+                      price=price,
+                      create_time=datetime.datetime.now())
         try:
             db.session.add(goods)
             db.session.commit()

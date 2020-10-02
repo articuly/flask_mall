@@ -7,7 +7,7 @@ from xp_mall.forms.member import LoginForm, RegisterForm
 from xp_mall.models.member import Member
 from xp_mall.utils import redirect_back
 from xp_mall.extensions import db
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 AuthManage = Blueprint("auth", __name__)
 
@@ -42,7 +42,7 @@ def register():
         email = form.email.data.lower()
         username = form.username.data
         password = form.password.data
-        user = Member(username=username, email=email)
+        user = Member(username=username, email=email, reg_date=datetime.now())
         user.set_password(password)
         db.session.add(user)
         db.session.commit()

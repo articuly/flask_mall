@@ -11,6 +11,7 @@ class SearchForm(FlaskForm):
                                           (1, "已支付订单"),
                                           (2, "已发货订单"),
                                           (3, "已收货订单"),
+                                          (4, "已取消")
                                           ])
     keyword = StringField("订单号")
     order_type = SelectField("结果排序", choices=[(1, "根据订单时间升序排列"),
