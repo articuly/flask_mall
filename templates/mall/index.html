@@ -1,61 +1,71 @@
 {% extends "base.html" %}
+{% block title %}
+    <title>清心涟漪 | 商品列表</title>
+{% endblock %}
+
 {% block style %}
     <style type="text/css">
-        .cart-btn {
-            height: 30px;
-            vertical-align: center;
+        .goods_thumb {
+            height: 210px;
+            width: 210px;
         }
     </style>
 {% endblock %}
-{% block content %}
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-2 hidden-xs hidden-sm">
 
+{% block  content %}
+    <!-- Breadcrumb Section Begin -->
+    <div class="breacrumb-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-text">
+                        <a href="{{ url_for("index") }}"><i class="fa fa-home"></i> 主页</a>
+                        <span><a href="{{ url_for("mall.index") }}"> 商品列表</a></span>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-6">
-                <!-- 媒体列表 -->
-                <ul class="media-list">
-                    {% if goods_list %}
-                        {% for goods in goods_list %}
-
-                            <li class="media">
-                                <a href="" class="pull-left">
-                                    <img src="/uploads/{{ goods.thumb }}" class="media-object">
-                                </a>
-                                <div class="media-body">
-                                    <h4 class="media-heading"><a
-                                            href="{{ url_for(".show_goods", category_id=goods.category_id, goods_id=goods.goods_id) }}">{{ goods.goods_title }}</a>
-                                    </h4>
-                                    <div class="media">
-                                        <p>{{ goods.price }}</p>
-                                        <span class="float-left">
-                                            <button class="btn btn-primary cart-btn"
-                                                    data-url="{{ url_for("member.add_cart", goods_id=goods.goods_id) }}">加入购物车</button>
-                                        </span>
-                                    </div>
-                                </div>
-                            </li>
-
-                        {% endfor %}
-                    {% endif %}
-
-                </ul>
-
-                <!-- 分页 -->
-                <ul class="pagination">
-                    {% for page in pageList %}
-                        {% if page!=None %}
-                            <li><a href="{{ url_for('mall_module.index', page=page) }}">{{ page }}</a></li>
-                        {% else %}
-                            <li><a href="#">...</a></li>
-                        {% endif %}
-                    {% endfor %}
-                </ul>
-            </div>
-
         </div>
     </div>
+    <!-- Breadcrumb Form Section Begin -->
+
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="main col-xl-8 col-lg-9 col-md-10 col-sm-11 col-12">
+                {% if goods_list %}
+                    <ul class="list-unstyled my-4">
+                        {% for goods in goods_list %}
+                            <li class="mt-5 media">
+                                <img class="mr-4 goods_thumb" src="/uploads/{{ goods.thumb }}" alt="">
+                                <div class="media-body">
+                                    <h4 class="mt-0 mb-1"><b>{{ goods.goods_title }}</b></h4>
+                                    <p>{{ goods.goods_subhead }}</p>
+                                    <p>优惠价：<span class="price">{{ goods.price }} </span>元</p>
+                                    <span class="float-left">
+                                        <button class="btn site-btn cart-btn"
+                                                data-url="{{ url_for("member.add_cart", goods_id=goods.goods_id) }}">加入购物车</button></span>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <!-- 分页 -->
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        {% for page in pageList %}
+                            {% if page!=None %}
+                                <li class="page-item"><a class="page-link"
+                                                         href="{{ url_for('mall_module.index', page=page) }}">{{ page }}</a>
+                                </li>
+                            {% else %}
+                                <li class="page-item"><a class="page-link" href="#">...</a></li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
     <script>
         csrf_token = '{{ csrf_token() }}'
         $(function () {
