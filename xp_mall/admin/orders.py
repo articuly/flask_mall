@@ -1,6 +1,6 @@
 # -*- coding=utf-8 -*-
 
-from flask import render_template, request, current_app, flash
+from flask import render_template, request, current_app, flash, redirect, url_for, jsonify
 from flask import jsonify, json
 from flask_login import login_required
 
@@ -8,7 +8,7 @@ from xp_mall.extensions import db
 from xp_mall.utils import redirect_back
 from xp_mall.admin import admin_module
 from xp_mall.models.goods import Goods
-from xp_mall.models.order import Order
+from xp_mall.models.order import Order, Logistics
 from xp_mall.models.category import GoodsCategory
 
 from xp_mall.forms.order import SearchForm
@@ -33,13 +33,13 @@ def manage_orders(page):
         order_type = request.args.get("order_type")
         form.order_type.data = order_type
         if order_type == "1":
-            order_type = Order.create_time.asc()
+            order_type = Order.createTime.asc()
         elif order_type == "2":
-            order_type = Order.create_time.desc()
+            order_type = Order.createTime.desc()
         elif order_type == "3":
             order_type = Order.price.asc()
         else:
-            order_type = Order.create_time.desc()
+            order_type = Order.createTime.desc()
         order_query = order_query.order_by(order_type)
     print(order_query)
     pagination = order_query.paginate(
@@ -82,3 +82,25 @@ def delete_order(order_id):
     order.status = 4
     db.session.commit()
     return "ok"
+
+
+@admin_module.route('/order/logis_edit/<int:order_id>', methods=['post'])
+def logis_edit(order_id):
+    # print('logis', order_id)
+    order = Order.query.get_or_404(order_id)
+    logistics = Logistics.query.filter(Logistics.order_id == order_id).one()
+    if request.method == 'POST':
+        logis_company = request.form.get('logis_company')
+        logis_number = request.form.get('logis_number')
+        # print(logis_company, logis_number)
+        logistics.logis_company = logis_company
+        logistics.logis_number = logis_number
+        order.status = 2
+        try:
+            db.session.add(order)
+            db.session.add(logistics)
+            db.session.commit()
+        except Exception as e:
+            print(e)
+        else:
+            return jsonify({'result': 'saved'})

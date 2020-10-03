@@ -54,7 +54,6 @@ class Logistics(db.Model):
     receiver = db.Column(db.String(20))
     mobile = db.Column(db.String(30))
     address = db.Column(db.String(100))
-    status = db.Column(db.String(100))
     logis_company = db.Column(db.String(50))
     logis_number = db.Column(db.String(20))
 

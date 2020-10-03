@@ -65,9 +65,9 @@
                                     {% if order.status == '4' %}
                                         <span>订单已取消</span>
                                     {% else %}
-                                        <button type="button" class="btn btn-info btn-sm btn-primary"
-                                                data-toggle="modal"
-                                                data-target="#sendOrder">
+                                        <button type="button" class="btn btn-info btn-sm btn-primary logis_send"
+                                                data-toggle="modal" data-remote="{{ order.id }}"
+                                                data-target="#sendOrder_{{ order.id }}">
                                             发货
                                         </button>
                                         <button type="submit" class="btn btn-danger btn-sm delete-btn"
@@ -100,34 +100,89 @@
         </div>
     </div>
     <!-- Modal -->
-    <div class="modal fade" id="sendOrder" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">物流信息</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    物流公司
-                    物流单号
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                    <button type="button" class="btn btn-primary">保存</button>
+    {% for order in pagination.items %}
+        <div class="modal fade" id="sendOrder_{{ order.id }}" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">物流信息</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="d-none" id="orderId_{{ order.id }}">{{ order.id }}</p>
+                        <div class="form-group">
+                            <label for="logis_company_{{ order.id }}">物流公司：</label>
+                            <input class="form-control logis_company" type="text" id="logis_company_{{ order.id }}"
+                                   placeholder="请填写公司名称">
+                        </div>
+                        <div class="form-group">
+                            <label for="logis_number_{{ order.id }}">物流单号：</label>
+                            <input class="form-control logis_number" type="text" id="logis_number_{{ order.id }}"
+                                   placeholder="请填写物流订单号码">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                        <button type="button" id="logis_save_{{ order.id }}" class="btn btn-primary logis_save"
+                        >保存
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    {% endfor %}
     <script type="text/javascript">
-        /**
-         * 修改
-         */
         var csrf_token = "{{ csrf_token() }}"
         var parent_id = 0
 
+        // 提交物流信息
+        {% for order in pagination.items %}
+            $(function () {
+                $("#logis_save_{{ order.id }}").on("click", function (event) {
+                    console.log("{{ order.id }}_ok")
+                    logis_company = $("#logis_company_{{ order.id }}").val()
+                    logis_number = $("#logis_number_{{ order.id }}").val()
+                    url = "/admin/order/logis_edit/" + {{ order.id }}
+                        console.log(logis_company, logis_number, url)
+                    if (logis_company == "") {
+                        $("#logis_company_{{ order.id }}").focus()
+                        return false
+                    }
+                    if (logis_number == "") {
+                        $("#logis_number_{{ order.id }}").focus()
+                        return false
+                    }
+
+                    $.ajax({
+                        type: "post",
+                        url: url,
+                        data: {
+                            'logis_company': logis_company,
+                            'logis_number': logis_number,
+                        },
+                        dataType: "json",
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader("X-CSRFToken", csrf_token)
+                        },
+                        success: function (data) {
+                            $("#logis_company_{{ order.id }}").val("")
+                            $("#logis_number_{{ order.id }}").val("")
+                            if (data.result == "saved") {
+                                window.location.reload()
+                            }
+                        }
+                    })
+                })
+            })
+        {% endfor %}
+
+        /**
+         * 修改
+         */
         $(function () {
             $(".search-btn").on("click", function (event) {
                 if (!$("#category_id").val()) {
