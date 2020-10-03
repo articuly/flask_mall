@@ -63,14 +63,21 @@
                                 <td>{{ order.order_no }} </td>
                                 <td>{{ order.subject }}</td>
                                 <td>{{ order.createTime }}</td>
-                                <td>{% if order.status != "0" %}
-                                    {{ order.status | get_order_status }}
-                                {% else %}
-                                    <a href="{{ url_for("member.pay_order",order_no=order.order_no) }}">立即付款</a>
-                                {% endif %}
+                                <td>
+                                    {% if order.status != "0" %}
+                                        {{ order.status | get_order_status }}
+                                    {% else %}
+                                        <a href="{{ url_for("member.pay_order",order_no=order.order_no) }}">立即付款</a>
+                                    {% endif %}
                                 </td>
                                 <td>
-                                    <a class="btn btn-info btn-sm edit-btn" href="">取消</a>
+                                    {% if order.status == '4' %}
+                                        <span>订单已取消</span>
+                                    {% else %}
+                                        <button type="submit" class="btn btn-danger btn-sm delete-btn"
+                                                data-href="{{ url_for('member.delete_order', order_id=order.id) }}">取消
+                                        </button>
+                                    {% endif %}
                                 </td>
                                 <td>请等待</td>
                             </tr>
@@ -121,20 +128,25 @@
             $(".delete-btn").on("click", function (event) {
                 var target = $(event.target);
                 url = $(this).attr("data-href")
-                {#console.log("ok")#}
-                $.ajax({
-                    url: url,
-                    type: "post",
-                    beforeSend: function (xhr) {
-                        xhr.setRequestHeader("X-CSRFToken", csrf_token)
-                    },
-                    data: {},
-                    success: function (data) {
-                        if (data == "ok") {
-                            console.log(target.parent().parent().remove())
-                        }
-                    },
-                })
+                console.log(url)
+                var message = confirm("确定取消订单?")
+                if (message) {
+                    $.ajax({
+                        url: url,
+                        type: "post",
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader("X-CSRFToken", csrf_token)
+                        },
+                        data: {},
+                        success: function (data) {
+                            if (data == "ok") {
+                                console.log(target.parent().parent().remove())
+                            }
+                        },
+                    })
+                } else {
+                    console.log("false")
+                }
             })
         })
 

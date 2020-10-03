@@ -61,7 +61,7 @@
                         <ul id="address_list">
                             {% for address in addresses %}
                                 <li class="address_li"><label class="radio">
-                                    <input type="radio" name="address" id="add_{{ address.id }}"
+                                    <input type="radio" name="addresses" id="add_{{ address.id }}"
                                            value="{{ address.receiver }}：{{ address.mobile }}：{{ address.address }}"/>
                                     {{ address.receiver }}，{{ address.mobile }}，{{ address.address }}
                                 </label></li>
@@ -97,8 +97,8 @@
     <script>
 
         $(document).ready(function () {
-            $('input[type=radio][name="address"]').change(function () {
-                var addr = $('input:radio[name="address"]:checked').val()
+            $('input[type=radio][name="addresses"]').change(function () {
+                var addr = $('input:radio[name="addresses"]:checked').val()
                 receiver = addr.split("：")[0]
                 mobile = addr.split("：")[1]
                 address = addr.split("：")[2]

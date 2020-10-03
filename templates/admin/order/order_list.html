@@ -65,9 +65,12 @@
                                     {% if order.status == '4' %}
                                         <span>订单已取消</span>
                                     {% else %}
-                                        <a class="btn btn-info btn-sm edit-btn" href="" target="_blank">发货</a>
+                                        <button type="button" class="btn btn-info btn-sm btn-primary"
+                                                data-toggle="modal"
+                                                data-target="#sendOrder">
+                                            发货
+                                        </button>
                                         <button type="submit" class="btn btn-danger btn-sm delete-btn"
-                                                onclick="return confirm('确定取消订单吗?');"
                                                 data-href="{{ url_for('admin.delete_order', order_id=order.id) }}">取消
                                         </button>
                                     {% endif %}
@@ -96,7 +99,28 @@
             </div>
         </div>
     </div>
-
+    <!-- Modal -->
+    <div class="modal fade" id="sendOrder" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">物流信息</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    物流公司
+                    物流单号
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script type="text/javascript">
         /**
          * 修改
@@ -121,20 +145,25 @@
             $(".delete-btn").on("click", function (event) {
                 var target = $(event.target);
                 url = $(this).attr("data-href")
-                {#console.log("ok")#}
-                $.ajax({
-                    url: url,
-                    type: "post",
-                    beforeSend: function (xhr) {
-                        xhr.setRequestHeader("X-CSRFToken", csrf_token)
-                    },
-                    data: {},
-                    success: function (data) {
-                        if (data == "ok") {
-                            console.log(target.parent().parent().remove())
-                        }
-                    },
-                })
+                console.log(url)
+                var message = confirm("确定取消订单?")
+                if (message) {
+                    $.ajax({
+                        url: url,
+                        type: "post",
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader("X-CSRFToken", csrf_token)
+                        },
+                        data: {},
+                        success: function (data) {
+                            if (data == "ok") {
+                                console.log(target.parent().parent().remove())
+                            }
+                        },
+                    })
+                } else {
+                    console.log("false")
+                }
             })
         })
 

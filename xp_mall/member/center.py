@@ -91,3 +91,16 @@ def manage_orders(page):
     return render_template('member/order/order_list.html', page=page,
                            pagination=pagination, form=form,
                            condition=condition)
+
+
+@member_module.route('/order/delete/<int:order_id>', methods=['POST'])
+def delete_order(order_id):
+    order = Order.query.get_or_404(order_id)
+    # 用户只能取消自己的订单
+    if int(order.buyer) == current_user.user_id:
+        print(order.buyer)
+        order.status = 4
+        db.session.commit()
+        return "ok"
+    else:
+        return 'fail'
