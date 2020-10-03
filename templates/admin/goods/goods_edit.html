@@ -68,6 +68,10 @@
                     {{ form.title(class="form-control") }}
                 </div>
                 <div class="form-group">
+                    {{ form.subhead.label }}
+                    {{ form.subhead(class="form-control") }}
+                </div>
+                <div class="form-group">
                     {{ form.price.label }}
                     {{ form.price(class="form-control") }}
                 </div>
@@ -118,6 +122,7 @@
                     })
                     cate_id = parent_id
                     title = $('#title').val()
+                    subhead = $('#subhead').val()
                     price = $("#price").val()
                     thumb = pic_array[0]
                     main_pic = JSON.stringify(pic_array)
@@ -131,6 +136,7 @@
                         },
                         data: {
                             "title": title,
+                            "subhead": subhead,
                             "price": price,
                             "category": cate_id,
                             "body": body,
@@ -143,6 +149,7 @@
                         }
                     })
                 }
+
                 $('.edit-btn').on('click', edit_goods)
             })
     </script>

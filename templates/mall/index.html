@@ -9,6 +9,10 @@
             height: 210px;
             width: 210px;
         }
+
+        a:hover {
+            color: #00a8c6;
+        }
     </style>
 {% endblock %}
 
@@ -37,7 +41,9 @@
                             <li class="mt-5 media">
                                 <img class="mr-4 goods_thumb" src="/uploads/{{ goods.thumb }}" alt="">
                                 <div class="media-body">
-                                    <h4 class="mt-0 mb-1"><b>{{ goods.goods_title }}</b></h4>
+                                    <h4 class="mt-0 mb-1"><a
+                                            href="{{ url_for(".show_goods", category_id=goods.category_id, goods_id=goods.goods_id) }}">
+                                        <b>{{ goods.goods_title }}</b></a></h4>
                                     <p>{{ goods.goods_subhead }}</p>
                                     <p>优惠价：<span class="price">{{ goods.price }} </span>元</p>
                                     <span class="float-left">

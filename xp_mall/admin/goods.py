@@ -22,7 +22,7 @@ def manage_goods(page):
         category_id = request.args.get("category_id")
         form.category_id.data = category_id
         goods_query = goods_query.filter_by(category_id=category_id)
-    #
+
     if request.args.get("keyword"):
         keyword = request.args.get("keyword")
         form.keyword.data = keyword
@@ -40,6 +40,7 @@ def manage_goods(page):
         else:
             order_type = Goods.create_time.desc()
         goods_query = goods_query.order_by(order_type)
+
     print('query:\n', goods_query)
     pagination = goods_query.paginate(
         page, current_app.config['XPMALL_MANAGE_GOODS_PER_PAGE'])
@@ -56,12 +57,14 @@ def new_goods():
     form = GoodsForm()
     if form.validate_on_submit():
         title = form.title.data
+        subhead = form.subhead.data
         thumb = form.thumb.data
         main_pic = form.main_pic.data
         body = form.body.data
         category_id = form.category.data
         price = form.price.data
         goods = Goods(goods_title=title,
+                      goods_subhead=subhead,
                       thumb=thumb,
                       main_pic=main_pic,
                       category_id=category_id,
@@ -88,6 +91,7 @@ def edit_goods(goods_id):
     goods = Goods.query.get_or_404(goods_id)
     if form.validate_on_submit():
         goods.goods_title = form.title.data
+        goods.goods_subhead = form.subhead.data
         goods.detail = form.body.data
         goods.thumb = form.thumb.data
         goods.main_pic = form.main_pic.data
@@ -97,6 +101,7 @@ def edit_goods(goods_id):
     elif form.errors:
         print(form.errors)
     form.title.data = goods.goods_title
+    form.subhead.data = goods.goods_subhead
     form.body.data = goods.detail
     thumbs = goods.main_pic
     form.category.data = goods.category_id
