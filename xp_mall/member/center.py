@@ -11,6 +11,7 @@ from xp_mall.models.order import Order, OrderGoods, Cart
 from xp_mall.extensions import db
 from xp_mall.member import member_module
 from xp_mall.forms.order import SearchForm
+from xp_mall.forms.member import EditInfoForm
 
 
 @member_module.route("/")
@@ -24,11 +25,36 @@ def cart_list():
     return render_template("member/cart/cart_list.html", cart_list=cart_list)
 
 
-@member_module.route("/profile")
+# 修改用户信息
+@member_module.route("/profile", methods=['get', 'post'])
 def profile():
-    cart_list = Cart.query.filter_by(user_id=current_user.user_id).all()
-    print(cart_list)
-    return ""
+    print(current_user.is_admin)
+    print(type(current_user.is_admin))
+    message = None
+    form = EditInfoForm()
+    user = Member.query.filter_by(user_id=current_user.user_id).one()
+    if form.validate_on_submit():
+        user.email = form.data['email']
+        user.sex = form.data['sex']
+        user.mobile = form.data['mobile']
+        password = form.data['password']
+        if user.validate_password(password):
+            try:
+                db.session.commit()
+                message = '修改成功'
+            except Exception as e:
+                print(str(e))
+                message = '后台发生错误'
+        else:
+            message = '用户名与密码不匹配'
+    elif form.errors:
+        print(form.errors)
+        message = '表单发生错误'
+    else:
+        form.email.data = user.email
+        form.sex.data = user.reg_sex
+        form.mobile.data = user.mobile
+    return render_template("member/info/info_edit.html", message=message, user=user, form=form)
 
 
 @member_module.route('/myorders', defaults={'page': 1})

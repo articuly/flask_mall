@@ -73,6 +73,7 @@ def edit_address(address_id):
             address.receiver = form.data['receiver']
             address.mobile = form.data['mobile']
             address.address = form.data['address']
+            print(address.receiver, address.mobile, address.address)
             try:
                 db.session.add(address)
                 db.session.commit()

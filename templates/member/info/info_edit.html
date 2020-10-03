@@ -1,43 +1,80 @@
 {% extends "member/member_base.html" %}
-<!DOCTYPE html>
-<html>
+{% block title %}
+    <title>清心涟漪 | 用户中心 | 我的资料</title>
+{% endblock %}
 
-<body>
+{% block style %}
+    <style type="text/css">
+        #sex {
+            height: auto;
+            line-height: 32px;
+            list-style-type: none;
+        }
 
-{% block content %}
+        #sex li {
+            padding-left: 20px;
+        }
+    </style>
+{% endblock %}
+
+{% block  content %}
+    <!-- Breadcrumb Section Begin -->
+    <div class="breacrumb-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-text">
+                        <a href="{{ url_for("index") }}"><i class="fa fa-home"></i> 主页</a>
+                        <span><a href="{{ url_for("member.center_index") }}"> 用户中心</a></span>
+                        <span><a href="{{ url_for("member.profile") }}"> 我的资料</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb Form Section Begin -->
 
     <div class="container-fluid">
-        <div class="row">
-
-            <div class="main col-md-12 col-lg-12 col-xs-12 col-sm-12">
-
-                <h3>用户信息修改</h3>
+        <div class="row justify-content-center">
+            <div class="main col-xl-3 col-lg-4 col-md-5 col-sm-6 col-7">
+                <h2 class="text-center"><b>用户信息修改</b></h2>
+                <br>
                 <div class="body">
+                    {% if message!=None %}
+                        <div class="alert alert-info" id="message" role="alert">{{ message }}</div>
+                    {% endif %}
+                    <div class="form-group">
+                        <label for="email">用户名：</label>
+                        <span><b>{{ user.username }}</b></span>
+                    </div>
                     <form action="" method="post">
-
                         {% for field in form %}
-
                             {% if field.widget.input_type!="hidden" %}
                                 <div class="form-group">
                                     {{ field.label }}
                                     {{ field }}
+                                    {% if field.errors %}
+                                        <div class="alert alert-warning alert-dismissible" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span></button>
+                                            <strong>注意! </strong>
+                                            {{ field.errors }}
+                                        </div>
+                                    {% endif %}
                                 </div>
                             {% else %}
                                 {{ field }}
-
                             {% endif %}
                         {% endfor %}
-
                         <div class="form-group">
-                            <input class="btn" type="submit" name="submit" id="btn1" value="修改信息"/>
-                            <input class="btn" type="reset" name="reset" id="btn2" value="重设"/>
+                            <input class="btn site-btn" type="submit" name="submit" id="btn1" value="修改信息"/>
+                            <input class="btn site-btn" type="reset" name="reset" id="btn2" value="重设"/>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-
+    <br>
 {% endblock %}
-</body>
-</html>
+
