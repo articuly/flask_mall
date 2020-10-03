@@ -67,8 +67,8 @@
                                     {% else %}
                                         <a class="btn btn-info btn-sm edit-btn" href="" target="_blank">发货</a>
                                         <button type="submit" class="btn btn-danger btn-sm delete-btn"
-                                                onclick="return confirm('确定删除订单吗?');"
-                                                data-href="{{ url_for('admin.delete_order', order_id=order.id) }}">删除
+                                                onclick="return confirm('确定取消订单吗?');"
+                                                data-href="{{ url_for('admin.delete_order', order_id=order.id) }}">取消
                                         </button>
                                     {% endif %}
                                 </td>

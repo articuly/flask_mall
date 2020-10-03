@@ -1,2 +1,35 @@
-<a href="{{ url_for("member.manage_orders") }}">支付成功，查看订单</a>
-<a href="/">继续购物</a>
+{% extends "member/member_base.html" %}
+{% block title %}
+    <title>清心涟漪 | 用户中心 | 我的订单</title>
+{% endblock %}
+
+{% block  content %}
+    <!-- Breadcrumb Section Begin -->
+    <div class="breacrumb-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-text">
+                        <a href="{{ url_for("index") }}"><i class="fa fa-home"></i> 主页</a>
+                        <span><a href="{{ url_for("member.center_index") }}"> 用户中心</a></span>
+                        <span><a href="{{ url_for("member.manage_orders") }}"> 我的订单</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb Form Section Begin -->
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="main col-xl-8 col-lg-9 col-md-10 col-sm-11 col-12">
+                <h2 class="text-center"><b>支付成功</b></h2>
+                <br>
+                <div class="text-center">
+                    <span><a class="site-btn" href="{{ url_for("member.manage_orders") }}">查看订单</a></span>
+                    <span><a class="site-btn" href="{{ url_for("mall.index") }}">继续购物</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+{% endblock %}

@@ -1,86 +1,97 @@
 {% extends "member/member_base.html" %}
-{% block title -%}
-    - 创建订单
+{% block title %}
+    <title>清心涟漪 | 用户中心 | 创建订单</title>
 {% endblock %}
+
 {% block style %}
-    body{
-    margin:0;
-    padding-top: 70px;
-    background: #fff;
-    }
-    .price{
-    color: #ff1c1c;
-    }
+    <style type="text/css">
+        .address_li {
+            height: auto;
+            line-height: 32px;
+            list-style-type: none;
+        }
+
+        .goods_thumb {
+            height: 180px;
+            width: 180px;
+        }
+    </style>
 {% endblock %}
-{% block content %}
-    <div class="container clearfix">
-        <div class="panel panel-default">
-            <div class="panel-heading">订单创建</div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        {% for cart in cart_list %}
-                            <div class="media">
-                                <div class="media-left">
-                                    <a href="#">
-                                        <img class="media-object" src="/uploads/{{ cart.goods.thumb }}">
-                                    </a>
-                                </div>
-                                <div class="media-body">
-                                    <h4 class="media-heading">
-                                        {{ cart.goods.goods_title }}
-                                    </h4>
-                                    <p>优惠价：<span class="price">{{ cart.goods.price }}</span>元
-                                    </p>
-                                    <p>购买数量：{{ cart.amount }} 件 <a href="{{ url_for('member.cart_list') }}">返回购物车</a>
-                                    </p>
-                                </div>
-                            </div>
-                        {% endfor %}
-                        <hr>
-                        订单总价:{{ total_price }}元
-                        <hr>
-                        <form action="{{ url_for("member.create_order") }}" id="order_form" method="post">
-                            <div class="form-group">
-                                <label for="address">选择地址：</label>
-                                <ul id="address_list">
-                                    {% for address in addresses %}
-                                        <li><label class="radio">
-                                            <input type="radio" name="address" id="add_{{ address.id }}"
-                                                   value="{{ address.receiver }}：{{ address.mobile }}：{{ address.address }}"/>
-                                            {{ address.receiver }}，{{ address.mobile }}，{{ address.address }}
-                                        </label></li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                            <div class="form-group">
-                                {{ form.receiver.label }}
-                                {{ form.receiver(class="form-control") }}
-                            </div>
-                            <div class="form-group">
-                                {{ form.mobile.label }}
-                                {{ form.mobile(class="form-control") }}
-                            </div>
-                            <div class="form-group">
-                                {{ form.address.label }}
-                                {{ form.address(class="form-control") }}
-                            </div>
-                            <div class="form-group">
-                                {{ form.payment }}
-                                {{ form.csrf_token }}
-                            </div>
-                        </form>
+
+{% block  content %}
+    <!-- Breadcrumb Section Begin -->
+    <div class="breacrumb-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-text">
+                        <a href="{{ url_for("index") }}"><i class="fa fa-home"></i> 主页</a>
+                        <span><a href="{{ url_for("member.center_index") }}"> 用户中心</a></span>
+                        <span><a href="{{ url_for("member.cart_list") }}"> 我的购物车</a></span>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-3 pull-right">
-                <button type="button" class="btn btn-primary alipay-btn" data-payment="alipay">支付宝</button>
-                <button type="button" class="btn btn-primary wxpay-btn" data-payment="wxpay">微信支付</button>
+    </div>
+    <!-- Breadcrumb Form Section Begin -->
+
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="main col-xl-5 col-lg-6 col-md-7 col-sm-8 col-9">
+                <h2 class="text-center"><b>创建订单</b></h2>
+                {% for cart in cart_list %}
+                    <ul class="list-unstyled my-4">
+                        <li class="media">
+                            <img class="mr-5 goods_thumb" src="/uploads/{{ cart.goods.thumb }}" alt="">
+                            <div class="media-body">
+                                <h4 class="mt-0 mb-1"><b>{{ cart.goods.goods_title }}</b></h4>
+                                <p>优惠价：<span class="price">{{ cart.goods.price }} </span>元</p>
+                                <p>购买数量：{{ cart.amount }} 件 <a href="{{ url_for('member.cart_list') }}">返回购物车</a></p>
+                            </div>
+                        </li>
+                    </ul>
+                {% endfor %}
+                <hr>
+                <div class="text-right">订单总价:{{ total_price }}元</div>
+                <hr>
+                <form action="{{ url_for("member.create_order") }}" id="order_form" method="post">
+                    <div class="form-group">
+                        <label for="address"><b>选择地址：</b></label>
+                        <ul id="address_list">
+                            {% for address in addresses %}
+                                <li class="address_li"><label class="radio">
+                                    <input type="radio" name="address" id="add_{{ address.id }}"
+                                           value="{{ address.receiver }}：{{ address.mobile }}：{{ address.address }}"/>
+                                    {{ address.receiver }}，{{ address.mobile }}，{{ address.address }}
+                                </label></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="form-group">
+                        {{ form.receiver.label }}
+                        {{ form.receiver(class="form-control") }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.mobile.label }}
+                        {{ form.mobile(class="form-control") }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.address.label }}
+                        {{ form.address(class="form-control") }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.payment }}
+                        {{ form.csrf_token }}
+                    </div>
+                </form>
+                <div class="row pull-right">
+                    <span type="button" class="btn btn-primary alipay-btn" data-payment="alipay">支付宝</span>　
+                    <span type="button" class="btn btn-success wxpay-btn" data-payment="wxpay">微信支付</span>
+                </div>
             </div>
         </div>
     </div>
+    <br>
 
     <script>
 

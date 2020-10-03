@@ -1,25 +1,31 @@
 {% extends "member/member_base.html" %}
-{% block style %}
-
-    input[type='number']{
-    width: 50px;
-    }
-    .btn{
-    margin-right: 30px;
-
-    }
-
+{% block title %}
+    <title>清心涟漪 | 用户中心 | 我的购物车</title>
 {% endblock %}
-{% block content %}
+
+{% block  content %}
+    <!-- Breadcrumb Section Begin -->
+    <div class="breacrumb-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-text">
+                        <a href="{{ url_for("index") }}"><i class="fa fa-home"></i> 主页</a>
+                        <span><a href="{{ url_for("member.center_index") }}"> 用户中心</a></span>
+                        <span><a href="{{ url_for("member.cart_list") }}"> 我的购物车</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb Form Section Begin -->
+
     <div class="container-fluid">
-        <div class="row">
-
-            <div class="col-md-12">
-                <!-- 媒体列表 -->
-                <h3>我的购物车</h3>
-
-                <table class="table table-bordered ">
-
+        <div class="row justify-content-center">
+            <div class="main col-xl-8 col-lg-9 col-md-10 col-sm-11 col-12">
+                <h2 class="text-center"><b>我的购物车</b></h2>
+                <table class="table table-bordered">
+                    <thead class="thead-dark">
                     <tr>
                         <th>ID</th>
                         <th>商品名称</th>
@@ -28,6 +34,7 @@
                         <th>总价</th>
                         <th>操作</th>
                     </tr>
+                    </thead>
                     {% for cart in cart_list %}
                         <tr>
                             <td>{{ cart.id }}</td>
@@ -46,7 +53,7 @@
                                 <output id="total_{{ cart.id }}">{{ cart.amount * cart.goods.price }}</output>
                             </td>
                             <td>
-                                <button class="btn btn-primary delete-btn"
+                                <button class="btn btn-danger delete-btn"
                                         data-url="{{ url_for("member.delete_cart", cart_id=cart.id) }}">删除
                                 </button>
                             </td>
@@ -56,11 +63,12 @@
                 <div class="pull-right">
                     总价:<span id="total"></span>元
                     <hr>
-                    <a class="btn btn-info" href="{{ url_for('member.create_order') }}">去结算</a>
+                    <a class="btn site-btn" href="{{ url_for('member.create_order') }}">去结算</a>
                 </div>
             </div>
         </div>
     </div>
+    <br>
     <script>
         csrf_token = '{{ csrf_token() }}'
         $(function () {
@@ -92,10 +100,8 @@
                             calc_total()
                         }
                     }
-
                 })
             })
-
 
             $("input[type='number']").on("change", function (e) {
                 obj = $(e.target)
@@ -113,8 +119,6 @@
                         }
                     }
                 })
-
-
             })
             calc_total()
         })
