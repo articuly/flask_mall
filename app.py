@@ -20,7 +20,7 @@ from xp_mall.models.category import GoodsCategory
 from xp_mall.models.member import Guest
 from xp_mall.models import area
 from xp_mall.models.goods import Goods
-from xp_mall.models.order import Order, OrderGoods, Logistics
+from xp_mall.models.order import Order, OrderGoods, Logistics, Cart
 from xp_mall.extensions import db, login_manager, csrf, ckeditor, moment, toolbar, migrate
 from xp_mall.extensions import whooshee, dropzone, alipay, wxpay
 from xp_mall.settings import config
@@ -59,9 +59,28 @@ def create_app(config_name=None):
     register_commands(app)
     register_shell_context(app)
     register_request_handlers(app)
+    register_template_context(app)
     login_manager.anonymous_user = Guest
     create_filter(app)
     return app
+
+
+# 模板上下文
+def register_template_context(app):
+    @app.context_processor
+    def getCart():
+        cart = Cart.query.filter_by(user_id=current_user.user_id).all()
+        cart_amount, cart_total = 0, 0
+        if cart:
+            for item in cart:
+                cart_amount = cart_amount + item.amount
+                cart_total = cart_total + item.goods.price * item.amount
+            print(cart_amount, cart_total)
+            return {'cart_amount': cart_amount, 'cart_total': cart_total}
+        else:
+            return {'cart_amount': cart_amount, 'cart_total': cart_total}
+
+    # def getTopCates():
 
 
 def register_logging(app):
@@ -72,13 +91,11 @@ def register_logging(app):
     '''
 
     class RequestFormatter(logging.Formatter):
-
         def format(self, record):
             record.method = request.method
             record.url = request.url
             record.remote_addr = request.remote_addr
             record.data = request.get_data(as_text=True)
-
             return super(RequestFormatter, self).format(record)
 
     # 请求日志
@@ -98,8 +115,6 @@ def register_logging(app):
         app.logger.addHandler(request_file_handler)
 
 
-#
-#
 def register_extensions(app):
     '''
     扩展初始化
@@ -124,8 +139,6 @@ def register_extensions(app):
         wxpay.init_app(app)
 
 
-#
-#
 def register_blueprints(app):
     """
     admin_module 后台管理模块
@@ -140,9 +153,6 @@ def register_blueprints(app):
     app.register_blueprint(mall_module, url_prefix='/mall')
 
 
-#
-#
-#
 def register_shell_context(app):
     '''
     flask shell环境变量自动导入
@@ -155,9 +165,6 @@ def register_shell_context(app):
         return dict(db=db)
 
 
-#
-
-#
 def register_commands(app):
     '''
     flask 自定义命令
@@ -203,9 +210,6 @@ def register_commands(app):
         click.echo('Done.')
 
 
-#
-#
-#
 def register_request_handlers(app):
     @app.after_request
     def query_profiler(response):

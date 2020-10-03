@@ -67,7 +67,7 @@
                                 <i class="fa fa-user-plus"></i>注册</a>
                         </span>
                     {% else %}
-                        {% if current_user.username == 'articuly' %}
+                        {% if current_user.is_admin %}
                             <span class="login-panel">
                                 <a href="{{ url_for('admin.index') }}">
                                     <i class="fa fa-cog"></i>管理后台</a>　
@@ -115,15 +115,26 @@
                     </div>
                     <div class="col-lg-3 text-right col-md-3">
                         {% if current_user.username %}
-                            <ul class="nav-right">
-                                <li class="cart-icon">
-                                    <a href="{{ url_for("member.cart_list") }}">
-                                        <i class="icon_cart"></i>
-                                        <span>3</span>
-                                    </a>
-                                </li>
-                                <li class="cart-price">$150.00</li>
-                            </ul>
+                            {% if cart_total > 0 %}
+                                <ul class="nav-right">
+                                    <li class="cart-icon">
+                                        <a href="{{ url_for("member.cart_list") }}">
+                                            <i class="icon_cart"></i>
+                                            <span>{{ cart_amount }}</span>
+                                        </a>
+                                    </li>
+                                    <li class="cart-price">￥{{ cart_total }}</li>
+                                </ul>
+                            {% else %}
+                                <ul class="nav-right">
+                                    <li class="cart-icon">
+                                        <a href="{{ url_for("member.cart_list") }}">
+                                            <i class="icon_cart"></i>
+                                        </a>
+                                    </li>
+                                    <li class="cart-price">购物车为空</li>
+                                </ul>
+                            {% endif %}
                         {% endif %}
                     </div>
                 </div>
