@@ -49,7 +49,7 @@
                 success: function (data) {
                     if (data.success == 'success') {
                         $('#wxpaycode').html("支付成功")
-                        setTimeout(document.location = "{{ url_for("index")}}", 3000)
+                        setTimeout(document.location = "{{ url_for("html")}}", 3000)
                         clearInterval(time_id)
                     }
 

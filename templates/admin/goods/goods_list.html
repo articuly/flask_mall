@@ -1,4 +1,5 @@
 {% extends "admin/admin_base.html" %}
+
 {% block title %}
     <title>清心涟漪 | 管理后台 | 商品管理</title>
 {% endblock %}
@@ -20,7 +21,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb-text">
-                        <a href="{{ url_for("index") }}"><i class="fa fa-home"></i> 主页</a>
+                        <a href="{{ url_for("html") }}"><i class="fa fa-home"></i> 主页</a>
                         <span><a href="{{ url_for("admin.index") }}"> 管理后台</a></span>
                         <span><a href="{{ url_for("admin.manage_goods") }}"> 商品管理</a></span>
                     </div>
@@ -55,7 +56,7 @@
                     </form>
                     <br>
                     <hr>
-                    <h3>商品总数：<small class="text-muted">{{ pagination.total }} 橙色商品为推荐商品</small></h3>
+                    <h3>商品总数：<small class="text-muted">{{ pagination.total }}</small></h3>
                 </div>
                 {% if pagination.total > 0 %}
                     <table class="table table-bordered">
@@ -94,6 +95,7 @@
                         <td colspan="4">
                             <input type="button" class="btn btn-primary all" value="全部选中"/>
                             <input type="button" class="btn btn-primary del-all" value="删除选中">
+                            <span><small> 橙色商品为推荐商品，可一次推荐多个商品。已推荐商品再次点推荐，则取消推荐。</small></span>
                         </td>
                     </table>
                     <nav aria-label="Page navigation example">

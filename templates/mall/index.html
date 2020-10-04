@@ -23,7 +23,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb-text">
-                        <a href="{{ url_for("index") }}"><i class="fa fa-home"></i> 主页</a>
+                        <a href="{{ url_for("html") }}"><i class="fa fa-home"></i> 主页</a>
                         <span><a href="{{ url_for("mall.index") }}"> 商品列表</a></span>
                     </div>
                 </div>
@@ -34,7 +34,7 @@
 
     <div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="main col-xl-8 col-lg-9 col-md-10 col-sm-11 col-12">
+            <div class="main col-xl-6 col-lg-7 col-md-8 col-sm-9 col-10">
                 {% if goods_list %}
                     <ul class="list-unstyled my-4">
                         {% for goods in goods_list %}
@@ -42,13 +42,18 @@
                                 <img class="mr-4 goods_thumb" src="/uploads/{{ goods.thumb }}" alt="">
                                 <div class="media-body">
                                     <h4 class="mt-0 mb-1"><a
-                                            href="{{ url_for(".show_goods", category_id=goods.category_id, goods_id=goods.goods_id) }}">
+                                            href="{{ url_for("mall.show_goods", category_id=goods.category_id, goods_id=goods.goods_id) }}">
                                         <b>{{ goods.goods_title }}</b></a></h4>
                                     <p>{{ goods.goods_subhead }}</p>
                                     <p>优惠价：<span class="price">{{ goods.price }} </span>元</p>
                                     <span class="float-left">
-                                        <button class="btn site-btn cart-btn"
-                                                data-url="{{ url_for("member.add_cart", goods_id=goods.goods_id) }}">加入购物车</button></span>
+                                        {% if current_user.user_id %}
+                                            <button class="btn site-btn cart-btn"
+                                                    data-url="{{ url_for("member.add_cart", goods_id=goods.goods_id) }}">加入购物车</button>
+                                        {% else %}
+                                            <a class="btn site-btn" href="{{ url_for('auth.login') }}">加入购物车</a>
+                                        {% endif %}
+                                    </span>
                                 </div>
                             </li>
                         {% endfor %}
@@ -57,21 +62,35 @@
                 <!-- 分页 -->
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
+                        {% if res.has_prev %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ url_for('mall.index', page=res.prev_num ) }}"
+                                   aria-label="Next">
+                                    <span aria-hidden="true">上一页</span></a>
+                            </li>
+                        {% endif %}
                         {% for page in pageList %}
                             {% if page!=None %}
                                 <li class="page-item"><a class="page-link"
-                                                         href="{{ url_for('mall_module.index', page=page) }}">{{ page }}</a>
+                                                         href="{{ url_for('mall.index', page=page) }}">{{ page }}</a>
                                 </li>
                             {% else %}
                                 <li class="page-item"><a class="page-link" href="#">...</a></li>
                             {% endif %}
                         {% endfor %}
+                        {% if res.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ url_for('mall.index', page=res.next_num ) }}"
+                                   aria-label="Next">
+                                    <span aria-hidden="true">下一页</span></a>
+                            </li>
+                        {% endif %}
                     </ul>
                 </nav>
             </div>
         </div>
     </div>
-
+    <br>
     <script>
         csrf_token = '{{ csrf_token() }}'
         $(function () {

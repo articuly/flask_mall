@@ -99,7 +99,7 @@
                 <div class="row">
                     <div class="col-lg-2 col-md-2">
                         <div class="logo">
-                            <a href="./index.html">
+                            <a href="{{ url_for('html') }}">
                                 <img src="{{ url_for('static', filename='img/logo.png') }}" alt="">
                             </a>
                         </div>
@@ -147,8 +147,11 @@
                         <i class="ti-menu"></i>
                         <span>所有商品分类</span>
                         <ul class="depart-hover">
-                            <li><a href="#">Women’s Clothing</a></li>
-                            <li><a href="#">Men’s Clothing</a></li>
+                            <li><a href="#">电脑配件</a></li>
+                            <li><a href="#">数码产品</a></li>
+                            <li><a href="#">化妆品</a></li>
+                            <li><a href="#">食品</a></li>
+                            <li><a href="#">箱包</a></li>
                         </ul>
                     </div>
                 </div>
@@ -180,7 +183,7 @@
                 <div class="col-lg-3">
                     <div class="footer-left">
                         <div class="footer-logo">
-                            <a href="{{ url_for("index") }}"><img
+                            <a href="{{ url_for("html") }}"><img
                                     src="{{ url_for('static', filename='img/footer-logo.png') }}" alt=""></a>
                         </div>
                         <ul>

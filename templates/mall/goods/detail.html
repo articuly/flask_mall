@@ -33,7 +33,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb-text product-more">
-                        <a href="{{ url_for("index") }}"><i class="fa fa-home"></i> 主页</a>
+                        <a href="{{ url_for("html") }}"><i class="fa fa-home"></i> 主页</a>
                         <span><a href="{{ url_for("mall.index") }}"> 商品列表</a></span>
                         <span> 商品详情</span>
                     </div>
@@ -75,7 +75,9 @@
                                     {#                                    <div class="pro-qty">#}
                                     {#                                        <input type="text" value="1">#}
                                     {#                                    </div>#}
-                                    <a href="#" class="primary-btn pd-cart cart-btn">加入购物车</a>
+                                    <button class="primary-btn pd-cart cart-btn"
+                                            data-url="{{ url_for("member.add_cart", goods_id=goods.goods_id) }}">加入购物车
+                                    </button>
                                 </div>
                                 <ul class="pd-tags">
                                     <li><span>分类</span>：{{ goods.category.name }}</li>
@@ -196,96 +198,31 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-3 col-sm-6">
-                    <div class="product-item">
-                        <div class="pi-pic" style="height: 250px">
-                            <img src="{{ url_for('static', filename='img/products/women-1.jpg') }}" alt="">
-                            <!--                            <div class="icon">-->
-                            <!--                                <i class="icon_heart_alt"></i>-->
-                            <!--                            </div>-->
-                            <ul>
-                                <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                <li class="quick-view"><a href="#">加入购物车</a></li>
-                            </ul>
-                        </div>
-                        <div class="pi-text">
-                            <a href="#"><h5>标题</h5></a>
-                            <div class="product-price">$14.00</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="product-item">
-                        <div class="pi-pic">
-                            <img src="img/products/women-2.jpg" alt="">
-                            <div class="icon">
-                                <i class="icon_heart_alt"></i>
-                            </div>
-                            <ul>
-                                <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="pi-text">
-                            <div class="catagory-name">Shoes</div>
-                            <a href="#">
-                                <h5>Guangzhou sweater</h5>
-                            </a>
-                            <div class="product-price">
-                                $13.00
+                {% for recommend_good in recommend_goods %}
+                    {% if loop.index <= 4 %}
+                        <div class="col-lg-3 col-sm-6">
+                            <div class="product-item">
+                                <div class="pi-pic" style="height: 250px">
+                                    <img src="/uploads/{{ recommend_good.thumb }}" alt="">
+                                    <!--                            <div class="icon">-->
+                                    <!--                                <i class="icon_heart_alt"></i>-->
+                                    <!--                            </div>-->
+                                    <ul>
+                                        <li class="w-icon active"><a><i class="icon_bag_alt"></i></a></li>
+                                        <li class="quick-view">
+                                            <a href="" class="cart-btn"
+                                               data-url="{{ url_for("member.add_cart", goods_id=recommend_good.goods_id) }}">加入购物车</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="pi-text">
+                                    <a href="#"><h5>{{ recommend_good.goods_title }}</h5></a>
+                                    <div class="product-price">￥{{ recommend_good.price }}</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="product-item">
-                        <div class="pi-pic">
-                            <img src="img/products/women-3.jpg" alt="">
-                            <div class="icon">
-                                <i class="icon_heart_alt"></i>
-                            </div>
-                            <ul>
-                                <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="pi-text">
-                            <div class="catagory-name">Towel</div>
-                            <a href="#">
-                                <h5>Pure Pineapple</h5>
-                            </a>
-                            <div class="product-price">
-                                $34.00
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="product-item">
-                        <div class="pi-pic">
-                            <img src="img/products/women-4.jpg" alt="">
-                            <div class="icon">
-                                <i class="icon_heart_alt"></i>
-                            </div>
-                            <ul>
-                                <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="pi-text">
-                            <div class="catagory-name">Towel</div>
-                            <a href="#">
-                                <h5>Converse Shoes</h5>
-                            </a>
-                            <div class="product-price">
-                                $34.00
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    {% endif %}
+                {% endfor %}
             </div>
         </div>
     </div>
@@ -306,7 +243,7 @@
                 // 添加到购物车
                 $(".cart-btn").on("click", function () {
                     $.ajax({
-                        url: "{{ url_for("member.add_cart", goods_id=goods.goods_id) }}",
+                        url: $(this).data("url"),
                         type: "post",
                         beforeSend: function (xhr) {
                             xhr.setRequestHeader("X-CSRFToken", csrf_token)
