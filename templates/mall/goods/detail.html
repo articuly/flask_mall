@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block title %}
-    <title>Flask商城 | {{ goods.title }}</title>
+    <title>Flask商城 | 商品详情</title>
 {% endblock %}
 
 {% block style %}
@@ -198,12 +198,12 @@
                 </div>
             </div>
             <div class="row">
-                {% for recommend_good in recommend_goods %}
+                {% for item in recommend_goods %}
                     {% if loop.index <= 4 %}
                         <div class="col-lg-3 col-sm-6">
                             <div class="product-item">
                                 <div class="pi-pic" style="height: 250px">
-                                    <img src="/uploads/{{ recommend_good.thumb }}" alt="">
+                                    <img src="/uploads/{{ item.thumb }}" alt="">
                                     <!--                            <div class="icon">-->
                                     <!--                                <i class="icon_heart_alt"></i>-->
                                     <!--                            </div>-->
@@ -211,13 +211,14 @@
                                         <li class="w-icon active"><a><i class="icon_bag_alt"></i></a></li>
                                         <li class="quick-view">
                                             <a href="" class="cart-btn"
-                                               data-url="{{ url_for("member.add_cart", goods_id=recommend_good.goods_id) }}">加入购物车</a>
+                                               data-url="{{ url_for("member.add_cart", goods_id=item.goods_id) }}">加入购物车</a>
                                         </li>
                                     </ul>
                                 </div>
                                 <div class="pi-text">
-                                    <a href="#"><h5>{{ recommend_good.goods_title }}</h5></a>
-                                    <div class="product-price">￥{{ recommend_good.price }}</div>
+                                    <a href="{{ url_for("mall.show_goods", category_id=item.category_id, goods_id=item.goods_id) }}">
+                                        <h5>{{ item.goods_title }}</h5></a>
+                                    <div class="product-price">￥{{ item.price }}</div>
                                 </div>
                             </div>
                         </div>
