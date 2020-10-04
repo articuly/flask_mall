@@ -132,3 +132,29 @@ def batch_delete_goods():
     Goods.query.filter(Goods.goods_id.in_(ids)).delete(synchronize_session="fetch")
     db.session.commit()
     return "ok"
+
+
+# 根据文章id推荐文章
+@admin_module.route('/goods/recommend/', methods=['post'])
+def goods_recommend():
+    goods_id = int(request.form.get('goods_id'))  # 提交json的data可视为form的数据
+    print(goods_id)
+    message = {'result': 'fail', 'id': goods_id, 'type': 'recommend'}
+    if goods_id:
+        goods = Goods.query.get(goods_id)
+        if goods:
+            if goods.is_recommend is None:
+                goods.is_recommend = 1
+                try:
+                    db.session.commit()
+                except Exception as e:
+                    print(str(e))
+                message['result'] = 'success'
+            elif goods.is_recommend == 1:
+                goods.is_recommend = None
+                try:
+                    db.session.commit()
+                except Exception as e:
+                    print(str(e))
+                message['result'] = 'cancel'
+    return jsonify(message)

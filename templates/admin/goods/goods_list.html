@@ -3,6 +3,16 @@
     <title>清心涟漪 | 管理后台 | 商品管理</title>
 {% endblock %}
 
+{% block style %}
+    <style type="text/css">
+        .recommend {
+            color: orange;
+            border: 1px solid orange;
+            font-size: 1.1em;
+        }
+    </style>
+{% endblock %}
+
 {% block  content %}
     <!-- Breadcrumb Section Begin -->
     <div class="breacrumb-section">
@@ -45,7 +55,7 @@
                     </form>
                     <br>
                     <hr>
-                    <h3>商品总数：<small class="text-muted">{{ pagination.total }}</small></h3>
+                    <h3>商品总数：<small class="text-muted">{{ pagination.total }} 橙色商品为推荐商品</small></h3>
                 </div>
                 {% if pagination.total > 0 %}
                     <table class="table table-bordered">
@@ -58,23 +68,26 @@
                         </tr>
                         </thead>
                         {% for goods in pagination.items %}
-                            <tr>
+                            <tr class="goods_{{ goods.goods_id }}">
                                 <td>{{ loop.index + ((page - 1) * config.XPMALL_MANAGE_GOODS_PER_PAGE) }}<input
                                         type="checkbox" name="del_id" value="{{ goods.goods_id }}"/></td>
                                 <td>
-                                    <a href="{{ url_for('mall.show_goods', category_id=goods.category_id, goods_id=goods.goods_id) }}"
+                                    <a class="goods_{{ goods.goods_id }}"
+                                       href="{{ url_for('mall.show_goods', category_id=goods.category_id, goods_id=goods.goods_id) }}"
                                        target="_blank">{{ goods.goods_title }}</a></td>
                                 <td>
-                                    <a href="{{ url_for('admin.manage_goods', category_id=goods.category_id) }}">{{ goods.category.name }}</a>
+                                    <a class="goods_{{ goods.goods_id }}"
+                                       href="{{ url_for('admin.manage_goods', category_id=goods.category_id) }}">{{ goods.category.name }}</a>
                                 </td>
                                 <td>
                                     <a class="btn btn-info btn-sm edit-btn"
                                        href="{{ url_for('admin.edit_goods', goods_id=goods.goods_id) }}">修改</a>
+                                    <a class="btn btn-success btn-sm"
+                                       href="javascript:goodsRecommend({{ goods.goods_id }})">推荐</a>
                                     <button type="submit" class="btn btn-danger btn-sm delete-btn"
                                             onclick="return confirm('确定删除商品吗?');"
                                             data-href="{{ url_for('admin.delete_goods', goods_id=goods.goods_id) }}">删除
                                     </button>
-
                                 </td>
                             </tr>
                         {% endfor %}
@@ -122,6 +135,32 @@
             })
         })
 
+        // 推荐商品
+        function goodsRecommend(goods_id) {
+            url = "{{ url_for("admin.goods_recommend") }}"
+            $.ajax({
+                type: "post",
+                url: url,
+                data: {'goods_id': goods_id},
+                dataType: "json",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("X-CSRFToken", csrf_token)
+                },
+                success: function (data) {
+                    console.log(data)
+                    if (data.result == "success") {
+                        console.log($(".goods_" + data.id))
+                        // 操作之后改变样式
+                        $(".goods_" + data.id).toggleClass(data.type)
+                    } else if (data.result == 'cancel') {
+                        {#$(".goods_" + data.id).removeClass(data.type)#}
+                        window.location.reload()
+                    } else {
+                        alert('过程发生错误，请重新尝试')
+                    }
+                }
+            })
+        }
 
         /**
          * 删除
@@ -144,7 +183,6 @@
                             console.log(target.parent().parent().remove())
                         }
                     },
-
                 })
             })
         })
@@ -159,9 +197,7 @@
                 } else {
                     $("input[name='del_id']").attr("checked", "true");
                 }
-
             })
-
         })
 
         /**
@@ -180,15 +216,12 @@
                     data: {'checkID': checkID},
                     beforeSend: function (xhr) {
                         xhr.setRequestHeader("X-CSRFToken", csrf_token)
-
                     },
                     success: function (data) {
                         document.location.reload()
                     }
                 })
-
             })
-
         })
 
 
@@ -204,6 +237,19 @@
             category_url = "{{ url_for("admin.get_cate") }}"
             load_cate(0)
         })
+
+        {# 页面加载后将被推荐的商品改成橙色样式 #}
+        window.onload = function () {
+            {% for goods in pagination.items %}
+                {% if goods.is_recommend!=None %}
+                    $(".goods_{{ goods.goods_id }}").css({
+                        "color": "orange",
+                        "border": "1px solid orange",
+                        "font-size": "1.1em"
+                    })
+                {% endif %}
+            {% endfor %}
+        }
     </script>
     <script type="text/javascript" src="{{ url_for("static" ,filename="js/category.js") }}"></script>
 {% endblock %}

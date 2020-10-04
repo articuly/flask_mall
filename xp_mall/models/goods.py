@@ -25,4 +25,6 @@ class Goods(db.Model):
     price = db.Column(db.DECIMAL(12, 2))
     detail = db.Column(db.TEXT)
     create_time = db.Column(db.DateTime)
+    is_recommend = db.Column(db.Integer)
+
     category = db.relationship('GoodsCategory')
