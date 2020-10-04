@@ -15,7 +15,7 @@ AuthManage = Blueprint("auth", __name__)
 @AuthManage.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('index'))
+        return redirect(url_for('html'))
     form = LoginForm()
     if form.validate_on_submit():
         username = form.username.data
@@ -36,7 +36,7 @@ def login():
 @AuthManage.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for('index'))
+        return redirect(url_for('html'))
     form = RegisterForm()
     if form.validate_on_submit():
         email = form.email.data.lower()

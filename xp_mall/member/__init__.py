@@ -21,4 +21,18 @@ def is_login():
 
 @member_module.route("/")
 def index():
-    redirect(url_for("index"))
+    redirect(url_for("html"))
+
+
+@member_module.context_processor
+def getCart():
+    cart = Cart.query.filter_by(user_id=current_user.user_id).all()
+    cart_amount, cart_total = 0, 0
+    if cart:
+        for item in cart:
+            cart_amount = cart_amount + item.amount
+            cart_total = cart_total + item.goods.price * item.amount
+        print(cart_amount, cart_total)
+        return {'cart_amount': cart_amount, 'cart_total': cart_total}
+    else:
+        return {'cart_amount': cart_amount, 'cart_total': cart_total}

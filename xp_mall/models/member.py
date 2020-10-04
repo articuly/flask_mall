@@ -32,6 +32,7 @@ class Member(db.Model, UserMixin):
 
 
 class Guest(AnonymousUserMixin):
+    user_id = 0
     @property
     def is_admin(self):
         return False
@@ -51,7 +52,7 @@ class OAuth(db.Model):
 
 class UserAddress(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id= db.Column(db.Integer, db.ForeignKey('member.user_id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('member.user_id'))
     receiver = db.Column(db.String(20))
     mobile = db.Column(db.String(30))
     address = db.Column(db.String(100))

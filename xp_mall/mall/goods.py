@@ -6,22 +6,38 @@ from xp_mall.extensions import db
 from xp_mall.models.category import GoodsCategory
 from xp_mall.utils import redirect_back, redirect
 from xp_mall.models.goods import Goods
+from xp_mall.models.order import Cart
 from ..utils import get_all_subcate, get_all_parent
 import os
 
 
-@mall_module.route('/')
-def index():
+@mall_module.route('/<int:page>')
+@mall_module.route('/', defaults={'page': 1})
+def index(page):
     '''
     网站首页
-    :return:
     '''
-    page = request.args.get('page', 1, type=int)
+    # page = request.args.get('page', 1, type=int)
     per_page = current_app.config['XPMALL_GOODS_PER_PAGE']
-    pagination = Goods.query.order_by(Goods.create_time.desc()).paginate(page, per_page=per_page)
-    goods_list = pagination.items
-    categories = GoodsCategory.query.order_by(GoodsCategory.id).first()
-    return render_template("mall/index.html", goods_list=goods_list)
+    res = Goods.query.order_by(Goods.create_time.desc()).paginate(page, per_page=per_page)
+    goods_list = res.items
+    pageList = res.iter_pages()
+    # categories = GoodsCategory.query.order_by(GoodsCategory.id).first()
+
+    if current_user.user_id != 0:
+        cart = Cart.query.filter_by(user_id=current_user.user_id).all()
+        cart_amount, cart_total = 0, 0
+        if cart:
+            for item in cart:
+                cart_amount = cart_amount + item.amount
+                cart_total = cart_total + item.goods.price * item.amount
+            print(cart_amount, cart_total)
+            return render_template('mall/index.html', res=res, goods_list=goods_list, pageList=pageList,
+                                   cart_amount=cart_amount, cart_total=cart_total)
+        else:
+            return render_template('mall/index.html', res=res, goods_list=goods_list, pageList=pageList,
+                                   cart_amount=cart_amount, cart_total=cart_total)
+    return render_template("mall/index.html", res=res, goods_list=goods_list, pageList=pageList)
 
 
 @mall_module.route("/search")
