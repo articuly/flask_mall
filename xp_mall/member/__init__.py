@@ -1,4 +1,4 @@
-# -*- coding=utf-8 -*-
+# coding:utf-8
 
 from flask import Blueprint, redirect, url_for
 
@@ -12,6 +12,7 @@ from xp_mall.member.address import *
 from flask_login import login_required, current_user
 
 
+# 检测用户是否登陆
 @member_module.before_request
 @login_required
 def is_login():
@@ -19,13 +20,12 @@ def is_login():
     pass
 
 
-@member_module.route("/")
-def index():
-    redirect(url_for("html"))
-
-
 @member_module.context_processor
 def getCart():
+    '''
+    计算购物车信息
+    :return: 购物车商品数量总数，总金额
+    '''
     cart = Cart.query.filter_by(user_id=current_user.user_id).all()
     cart_amount, cart_total = 0, 0
     if cart:

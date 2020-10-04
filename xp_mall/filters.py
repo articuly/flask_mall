@@ -1,5 +1,6 @@
-# -*- coding=utf-8 -*-
+# coding:utf-8
 
+# 模板过滤函数，根据后台数据，返回对应文字
 def create_filter(app):
     @app.template_filter()
     def get_order_status(status):

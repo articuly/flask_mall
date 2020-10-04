@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding:utf-8
 
 from flask_bootstrap import Bootstrap
 from flask_ckeditor import CKEditor
@@ -13,6 +13,7 @@ from flask_dropzone import Dropzone
 from pay.alipay.create_pay import Alipay
 from pay.wxpay.create_pay import Wxpay
 
+# 初始化插件对象
 db = SQLAlchemy()
 login_manager = LoginManager()
 csrf = CSRFProtect()
@@ -22,7 +23,7 @@ toolbar = DebugToolbarExtension()
 migrate = Migrate(compare_type=True)
 whooshee = Whooshee()
 dropzone = Dropzone()
-# 支付对象
+# 支付对象，对原包有修改
 alipay = Alipay()
 wxpay = Wxpay()
 

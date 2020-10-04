@@ -1,24 +1,22 @@
-# -*- coding=utf-8 -*-
+# coding:utf-8
 
-from flask import Flask, request, render_template, url_for, \
-    jsonify, current_app
-
+from flask import request, render_template, current_app
 from flask_login import current_user
-
 from xp_mall.models.member import Member
-from xp_mall.models.goods import Goods
-from xp_mall.models.order import Order, OrderGoods, Cart, Logistics
+from xp_mall.models.order import Order, Cart, Logistics
 from xp_mall.extensions import db
 from xp_mall.member import member_module
 from xp_mall.forms.order import SearchForm
 from xp_mall.forms.member import EditInfoForm
 
 
+# 用户中心页
 @member_module.route("/")
 def center_index():
     return render_template("member/member_index.html")
 
 
+# 获取购物车商品信
 @member_module.route("/cart")
 def cart_list():
     cart_list = Cart.query.filter_by(user_id=current_user.user_id).all()
@@ -57,6 +55,7 @@ def profile():
     return render_template("member/info/info_edit.html", message=message, user=user, form=form)
 
 
+# 用户订单管理
 @member_module.route('/myorders', defaults={'page': 1})
 @member_module.route('/myorders/<int:page>', methods=['GET'])
 def manage_orders(page):
@@ -105,6 +104,7 @@ def manage_orders(page):
                            condition=condition)
 
 
+# 用户取消订单
 @member_module.route('/order/delete/<int:order_id>', methods=['POST'])
 def delete_order(order_id):
     order = Order.query.get_or_404(order_id)
@@ -118,6 +118,7 @@ def delete_order(order_id):
         return 'fail'
 
 
+# 用户确认收货
 @member_module.route('/order/receive_goods/<int:order_id>', methods=['post'])
 def receive_goods(order_id):
     order = Order.query.get_or_404(order_id)

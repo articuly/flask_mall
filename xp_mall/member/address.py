@@ -1,15 +1,14 @@
 # coding:utf-8
-import time, math, datetime
 
-from flask import current_app, render_template, redirect, \
-    request, jsonify, url_for
-from flask_login import current_user, login_required
-from xp_mall.extensions import db, csrf
+from flask import current_app, render_template, redirect, request, url_for
+from flask_login import current_user
+from xp_mall.extensions import db
 from xp_mall.member import member_module
 from xp_mall.models.member import UserAddress
 from xp_mall.forms.member import UserAddressForm
 
 
+# 添加用户地址
 @member_module.route('/new_address', methods=['get', 'post'])
 def new_address():
     print(current_user.user_id)
@@ -38,9 +37,11 @@ def new_address():
     return render_template('member/address/new_address.html', form=form)
 
 
+# 用户地址列表
 @member_module.route('/address_list', methods=['get', 'post'])
 def address_list():
     page = request.args.get('page', 1)
+    # 分页对象
     res = UserAddress.query.filter(UserAddress.user_id == current_user.user_id).order_by(
         UserAddress.id.desc()).paginate(int(page), current_app.config['XPMALL_MANAGE_GOODS_PER_PAGE'])
     addresses = res.items
@@ -51,6 +52,7 @@ def address_list():
                            pages=pages)
 
 
+# 删除用户地址
 @member_module.route('/delete_address/<int:address_id>', methods=['get', 'post'])
 def delete_address(address_id):
     address = UserAddress.query.get(address_id)
@@ -61,6 +63,7 @@ def delete_address(address_id):
     return redirect(url_for('member.address_list'))
 
 
+# 编辑用户地址
 @member_module.route('/edit_address/<int:address_id>', methods=['get', 'post'])
 def edit_address(address_id):
     form = UserAddressForm()

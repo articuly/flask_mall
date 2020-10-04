@@ -1,25 +1,24 @@
-# -*- coding: utf-8 -*-
+# coding:utf-8
 
 import logging
 import os
-import re
+import click
 from logging.handlers import RotatingFileHandler
 
-import click
 from flask import Flask, request, send_from_directory, render_template
 from flask_login import current_user, login_manager
 from flask_sqlalchemy import get_debug_queries
-from flask_wtf.csrf import CSRFError
 
 from xp_mall.admin import admin_module
 from xp_mall.mall import mall_module
 from xp_mall.member import member_module
 
 from xp_mall.models.category import GoodsCategory
-from xp_mall.models.member import Guest
-from xp_mall.models import area
+from xp_mall.models.member import Member, Guest
+from xp_mall.models.area import Area
 from xp_mall.models.goods import Goods
 from xp_mall.models.order import Order, OrderGoods, Logistics, Cart
+
 from xp_mall.extensions import db, login_manager, csrf, ckeditor, moment, toolbar, migrate
 from xp_mall.extensions import whooshee, dropzone, alipay, wxpay
 from xp_mall.settings import config
@@ -40,8 +39,10 @@ def create_app(config_name=None):
     app.config['secret_key'] = os.getenv("SECRET_KEY")
     app.config.from_object(config[config_name])
 
+    # 首页视图
     @app.route('/')
     def html():
+        # 已登陆用户，计算购物车图标的商品总数量与金额
         if current_user.user_id != 0:
             cart = Cart.query.filter_by(user_id=current_user.user_id).all()
             cart_amount, cart_total = 0, 0
@@ -53,12 +54,14 @@ def create_app(config_name=None):
                 return render_template('index.html', cart_amount=cart_amount, cart_total=cart_total)
             else:
                 return render_template('index.html', cart_amount=cart_amount, cart_total=cart_total)
+        # 非登陆用户，则不传出购物车信息
         return render_template('index.html')
 
     @app.route('/uploads/<path:filename>')
     def get_image(filename):
         return send_from_directory(app.config['XPMALL_UPLOAD_PATH'], filename)
 
+    # 注册后面各种函数到app
     register_logging(app)
     register_extensions(app)
     register_blueprints(app)
@@ -75,16 +78,20 @@ def create_app(config_name=None):
 def register_template_context(app):
     @app.context_processor
     def getRecomendGood():
+        '''
+        获取推荐商品
+        :return: 推荐商品上下文对象
+        '''
         recommend_goods = Goods.query.filter_by(is_recommend=1).order_by(Goods.create_time.desc()).limit(10)
         return {'recommend_goods': recommend_goods}
+
 
 def register_logging(app):
     '''
     运行日志
-    :param app:
-    :return:
     '''
 
+    # 请求日志格式
     class RequestFormatter(logging.Formatter):
         def format(self, record):
             record.method = request.method
@@ -113,8 +120,6 @@ def register_logging(app):
 def register_extensions(app):
     '''
     扩展初始化
-    :param app:
-    :return:
     '''
     db.init_app(app)
     login_manager.init_app(app)
@@ -136,11 +141,10 @@ def register_extensions(app):
 
 def register_blueprints(app):
     """
+    AuthManage 用户登陆注册模块
     admin_module 后台管理模块
     member_module 会员模块
     mall_module 商城模块
-    :param app:
-    :return:
     """
     app.register_blueprint(AuthManage, url_prefix='/')
     app.register_blueprint(admin_module, url_prefix='/admin')
@@ -151,8 +155,6 @@ def register_blueprints(app):
 def register_shell_context(app):
     '''
     flask shell环境变量自动导入
-    :param app:
-    :return:
     '''
 
     @app.shell_context_processor
@@ -163,8 +165,6 @@ def register_shell_context(app):
 def register_commands(app):
     '''
     flask 自定义命令
-    :param app:
-    :return:
     '''
 
     @app.cli.command()
@@ -185,17 +185,10 @@ def register_commands(app):
     def createadmin(username, password):
         '''
         创建管理员
-        :param username:
-        :param password:
-        :return:
         '''
         from xp_mall.models.member import Member
         click.echo('创建店铺管理员')
-        admin = Member(
-            username=username,
-            is_approve=1,
-            is_admin=True
-        )
+        admin = Member(username=username, is_approve=1, is_admin=True)
         admin.set_password(password)
         try:
             db.session.add(admin)

@@ -1,19 +1,18 @@
-# -*- coding: utf-8 -*-
-from flask import request, g
+# coding:utf-8
+
 from flask_ckeditor import CKEditorField
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, SelectField, TextAreaField, ValidationError, HiddenField, \
     BooleanField, PasswordField, IntegerField, HiddenField, RadioField, widgets, SelectMultipleField
 from wtforms.validators import DataRequired, Email, Length, Optional, URL, Regexp, EqualTo
 from flask_login import current_user
-from xp_mall.models.category import GoodsCategory
 from xp_mall.models.member import Member
 
 
 # from xp_cms.settings import Operations
 # from xp_cms.utils import generate_token
 
-
+# 用户登陆表单
 class LoginForm(FlaskForm):
     username = StringField('用户名', validators=[DataRequired(), Length(1, 20)])
     password = PasswordField('密码', validators=[DataRequired(), Length(1, 128)])
@@ -21,6 +20,7 @@ class LoginForm(FlaskForm):
     submit = SubmitField('立即登陆')
 
 
+# 用户注册表单
 class RegisterForm(FlaskForm):
     username = StringField('用户名',
                            validators=[DataRequired(), Length(1, 20), Regexp('^[a-zA-Z0-9]*$', message='字母与数字组成')])
@@ -29,26 +29,31 @@ class RegisterForm(FlaskForm):
     password2 = PasswordField('确认密码', validators=[DataRequired()])
     Submit = SubmitField()
 
+    # 验证邮箱是否重复
     def validate_email(self, field):
         if Member.query.filter_by(email=field.data).first():
             raise ValidationError("The email is already in use.")
 
+    # 验证用户名是重复
     def validate_username(self, field):
         if Member.query.filter_by(username=field.data).first():
             raise ValidationError("The username is already in use")
 
 
+# 用户绑定表单
 class BindForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(1, 20)])
     password = PasswordField('Password', validators=[DataRequired(), Length(1, 128)])
     submit = SubmitField('Bind')
 
 
+# 用户忘记密码表单
 class ForgetPasswordForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(1, 20)])
     submit = SubmitField('提交')
 
 
+# 用户重置密码表单
 class ResetPasswordForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(1, 20)])
     password = PasswordField('Password', validators=[DataRequired(), Length(8, 30), EqualTo('password2')])
@@ -56,6 +61,7 @@ class ResetPasswordForm(FlaskForm):
     submit = SubmitField('提交')
 
 
+# 用户订单收件信息表单
 class AddressForm(FlaskForm):
     receiver = StringField('收件人', validators=[DataRequired()])
     mobile = StringField("电话", validators=[DataRequired()])
@@ -63,6 +69,7 @@ class AddressForm(FlaskForm):
     payment = HiddenField("支付方式", validators=[DataRequired()])
 
 
+# 用户地址表单
 class UserAddressForm(FlaskForm):
     receiver = StringField('收件人', validators=[DataRequired()])
     mobile = StringField("电话", validators=[DataRequired()])
@@ -76,7 +83,7 @@ class CheckBoxField(SelectMultipleField):
     option_widget = widgets.CheckboxInput()
 
 
-# 修改用户信息
+# 修改用户信息表单
 class EditInfoForm(FlaskForm):
     email = StringField("电子邮箱：", validators=[DataRequired(), Length(1, 64), Email()])
     sex = RadioField('性别：', validators=[DataRequired(), ], render_kw={'class': 'd-flex'},

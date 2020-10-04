@@ -3,6 +3,7 @@
 from xp_mall.extensions import db
 
 
+# 地区类
 class Area(db.Model):
     place_id = db.Column(db.Integer, primary_key=True)
     place_name = db.Column(db.String(50))

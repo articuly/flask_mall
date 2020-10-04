@@ -1,18 +1,14 @@
 # coding:utf-8
 
-from flask import render_template, g, request, \
-    jsonify, current_app, redirect, flash, url_for
+from flask import render_template, g, request, jsonify, current_app, redirect, flash, url_for
 from flask_login import login_required
 from xp_mall.admin import admin_module
 from xp_mall.extensions import db
 from xp_mall.forms.area import AreaForm
 from xp_mall.models.area import Area
 
-"""
-Aear 地区分类管理
-"""
 
-
+# Area地区管理
 @admin_module.route('/area/manage/', defaults={"parent_id": 0}, methods=["GET"])
 @admin_module.route('/area/manage/<int:parent_id>', methods=["GET"])
 @login_required
@@ -22,6 +18,7 @@ def manage_area(parent_id):
     return render_template('admin/area/area_list.html', areas=areas)
 
 
+# 增加地区
 @admin_module.route('/area/new', methods=['GET', 'POST'])
 @login_required
 def new_area():
@@ -35,7 +32,7 @@ def new_area():
         area = Area(place_name=place_name, parent_id=parent_id, place_order=place_order)
         db.session.add(area)
         db.session.commit()
-        flash('Area created.', 'success')
+        # flash('Area created.', 'success')
         # return redirect(url_for('.manage_area'))
         return str(area.place_id)
     elif form.errors:
@@ -43,6 +40,7 @@ def new_area():
     return render_template('admin/area/area_add.html', form=form)
 
 
+# 编辑地区
 @admin_module.route('/area/<int:place_id>/edit', methods=['GET', 'POST'])
 @login_required
 def edit_area(place_id):
@@ -75,6 +73,7 @@ def edit_area(place_id):
     return render_template('admin/area/area_edit.html', form=form, message=message)
 
 
+# 删除地区
 @admin_module.route('/area/delete', methods=['POST'])
 @login_required
 def delete_area():
@@ -89,6 +88,7 @@ def delete_area():
     return "ok"
 
 
+# 地区管理，传出所有级别菜单
 @admin_module.route('/area', methods=['get'])
 @login_required
 def get_area():
@@ -98,4 +98,3 @@ def get_area():
     place_dicts = [(place.place_name, place.place_id) for place in sub_place]
     print(place_dicts)
     return jsonify(place_dicts)
-#

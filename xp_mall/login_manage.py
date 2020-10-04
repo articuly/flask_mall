@@ -1,7 +1,6 @@
-# -*- coding=utf-8 -*-
+# coding:utf-8
 
-from flask import render_template, redirect, request, url_for, \
-    current_app, flash, jsonify, Blueprint
+from flask import render_template, redirect, request, url_for, flash, jsonify, Blueprint
 from flask_login import login_user, current_user
 from xp_mall.forms.member import LoginForm, RegisterForm
 from xp_mall.models.member import Member
@@ -12,6 +11,7 @@ from datetime import timedelta, datetime
 AuthManage = Blueprint("auth", __name__)
 
 
+# 用户登陆
 @AuthManage.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -33,6 +33,7 @@ def login():
     return render_template('member/auth/login.html', form=form)
 
 
+# 用户注册
 @AuthManage.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:

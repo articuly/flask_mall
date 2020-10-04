@@ -1,25 +1,21 @@
-# -*- coding=utf-8 -*-
+# coding:utf-8
 
-from flask import render_template, request, current_app, flash, redirect, url_for, jsonify
-from flask import jsonify, json
-from flask_login import login_required
-
+from flask import render_template, request, current_app, redirect, url_for, jsonify
 from xp_mall.extensions import db
-from xp_mall.utils import redirect_back
 from xp_mall.admin import admin_module
 from xp_mall.models.goods import Goods
 from xp_mall.models.order import Order, Logistics
-from xp_mall.models.category import GoodsCategory
-
 from xp_mall.forms.order import SearchForm
 
 
+# 订单管理
 @admin_module.route('/manage/orders', defaults={'page': 1})
 @admin_module.route('/manage/orders/<int:page>', methods=['GET'])
 def manage_orders(page):
     form = SearchForm()
     order_query = Order.query
     status = request.args.get("status", None)
+    # 各种搜索条件
     if status:
         form.status = status
         order_query = order_query.filter_by(status=status)
@@ -41,22 +37,23 @@ def manage_orders(page):
         else:
             order_type = Order.createTime.desc()
         order_query = order_query.order_by(order_type)
-    print(order_query)
-    pagination = order_query.paginate(
-        page, current_app.config['XPMALL_MANAGE_GOODS_PER_PAGE'])
-    condition = request.query_string.decode()
 
-    # 查询订单物流信息
+    condition = request.query_string.decode()
+    # print('condition:\n', condition)
+    # 分页对象
+    pagination = order_query.paginate(page, current_app.config['XPMALL_MANAGE_GOODS_PER_PAGE'])
+
+    # 查询已发货订单物流信息
     sent_order = Logistics.query.filter(Logistics.status == '2').all()
     if sent_order:
-        return render_template('admin/order/order_list.html', page=page,
-                               pagination=pagination, form=form,
+        return render_template('admin/order/order_list.html', page=page, pagination=pagination, form=form,
                                condition=condition, sent_order=sent_order)
-    return render_template('admin/order/order_list.html', page=page,
-                           pagination=pagination, form=form,
+
+    return render_template('admin/order/order_list.html', page=page, pagination=pagination, form=form,
                            condition=condition)
 
 
+# 编辑订单
 @admin_module.route('/orders/<int:order_id>/edit', methods=['GET', 'POST'])
 def edit_order(order_id):
     pass
@@ -83,6 +80,7 @@ def edit_order(order_id):
     #                        current_cate=current_cate)
 
 
+# 删除订单
 @admin_module.route('/order/delete/<int:order_id>', methods=['POST'])
 def delete_order(order_id):
     order = Order.query.get_or_404(order_id)
@@ -91,6 +89,7 @@ def delete_order(order_id):
     return "ok"
 
 
+# 发货管理
 @admin_module.route('/order/logis_edit/<int:order_id>', methods=['post'])
 def logis_edit(order_id):
     # print('logis', order_id)
@@ -100,6 +99,7 @@ def logis_edit(order_id):
         logis_company = request.form.get('logis_company')
         logis_number = request.form.get('logis_number')
         # print(logis_company, logis_number)
+        # 改变订单状态，写入物流信息
         logistics.logis_company = logis_company
         logistics.logis_number = logis_number
         logistics.status = 2

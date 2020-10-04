@@ -1,19 +1,14 @@
-# -*- coding=utf-8 -*-
+# coding:utf-8
 
-from flask import render_template, g, request, \
-    jsonify, current_app, redirect, flash, url_for
+from flask import render_template, g, request, jsonify, current_app, redirect, url_for
 from flask_login import login_required
 from xp_mall.admin import admin_module
 from xp_mall.extensions import db
 from xp_mall.forms.goods import CategoryForm
-from xp_mall.models.goods import Goods
 from xp_mall.models.category import GoodsCategory
 
-"""
-Category 商品分类管理
-"""
 
-
+# Category商品分类管理
 @admin_module.route('/category/manage/', defaults={"parent_id": 0}, methods=["GET"])
 @admin_module.route('/category/manage/<int:parent_id>', methods=["GET"])
 @login_required
@@ -23,6 +18,7 @@ def manage_category(parent_id):
     return render_template('admin/category/category_list.html', categories=categories)
 
 
+# 增加商品分类管理
 @admin_module.route('/category/new', methods=['GET', 'POST'])
 @login_required
 def new_category():
@@ -44,6 +40,7 @@ def new_category():
     return render_template('admin/category/category_add.html', form=form)
 
 
+# 编辑商品分类管理
 @admin_module.route('/category/<int:category_id>/edit', methods=['GET', 'POST'])
 @login_required
 def edit_category(category_id):
@@ -75,6 +72,7 @@ def edit_category(category_id):
     return render_template('admin/category/category_edit.html', form=form, message=message)
 
 
+# 删除商品分类管理
 @admin_module.route('/category/delete', methods=['POST'])
 @login_required
 def delete_category():
@@ -87,6 +85,7 @@ def delete_category():
     return "ok"
 
 
+# 商品分类管理，传出所有级别菜单
 @admin_module.route('/category', methods=['get'])
 @login_required
 def get_cate():
@@ -96,4 +95,3 @@ def get_cate():
     cate_dicts = [(sub_cate.name, sub_cate.id) for sub_cate in sub_cates]
     print(cate_dicts)
     return jsonify(cate_dicts)
-#

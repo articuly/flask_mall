@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding:utf-8
 try:
     from urlparse import urlparse, urljoin
 except ImportError:
@@ -18,6 +18,11 @@ from xp_mall.models.category import GoodsCategory
 
 
 def is_safe_url(target):
+    '''
+    检测安全网址
+    :param target:
+    :return:
+    '''
     ref_url = urlparse(request.host_url)
     test_url = urlparse(urljoin(request.host_url, target))
     return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
@@ -29,8 +34,8 @@ def allowed_file(filename):
     :param filename:
     :return:
     '''
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in current_app.config['XPMALL_ALLOWED_IMAGE_EXTENSIONS']
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in current_app.config[
+        'XPMALL_ALLOWED_IMAGE_EXTENSIONS']
 
 
 def rename_image(old_filename):
@@ -45,6 +50,14 @@ def rename_image(old_filename):
 
 
 def resize_image(image, filename, base_width, module):
+    '''
+    缩放图片
+    :param image:
+    :param filename:
+    :param base_width:
+    :param module:
+    :return:
+    '''
     base_size = current_app.config[module + '_PHOTO_SIZE'][base_width]
     filename, ext = os.path.splitext(filename)
     img = Image.open(image)
@@ -77,7 +90,6 @@ def upload_image(module):
     except FileNotFoundError as e:
         os.makedirs(os.path.join(upload_path, save_dir))
         f.save(os.path.join(upload_path, new_filename))
-
     return new_filename, f
 
 
@@ -128,7 +140,6 @@ def validate_token(user, token, operation):
         user.confirmed = True
     else:
         return False
-
     db.session.commit()
     return True
 
@@ -136,9 +147,6 @@ def validate_token(user, token, operation):
 def redirect_back(default='index', **kwargs):
     '''
     页面跳转返回，如果参数含有next，跳转会next页面
-    :param default:
-    :param kwargs:
-    :return:
     '''
     for target in request.args.get('next'), request.referrer:
         if not target:
@@ -151,13 +159,9 @@ def redirect_back(default='index', **kwargs):
 def get_all_parent(id):
     '''
     获得某个分类的所有父类
-    :param id:
-    :return:
     '''
-    category = db.session.query(GoodsCategory.parent_id, GoodsCategory.name,
-                                GoodsCategory.id) \
-        .filter_by(id=id).order_by(GoodsCategory.id).first()
-
+    category = db.session.query(GoodsCategory.parent_id, GoodsCategory.name, GoodsCategory.id).filter_by(
+        id=id).order_by(GoodsCategory.id).first()
     if category.parent_id != None:
         return [(category.name, category.id)] + get_all_parent(category.parent_id)
     else:

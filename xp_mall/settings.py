@@ -1,9 +1,10 @@
-# -*- coding: utf-8 -*-
+# coding:utf-8
 
 import os
 import sys
 import mysql.connector
 
+# 基础路经
 basedir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 # 解决linux与windows下sqlite文件路径兼容性
@@ -17,6 +18,7 @@ else:
 DOMAIN = "test.articuly.com:7777"
 
 
+# 基础配置
 class BaseConfig(object):
     SECRET_KEY = os.getenv('SECRET_KEY', 'dev key')
     BASEDIR = basedir
@@ -51,8 +53,7 @@ class BaseConfig(object):
 
     XPMALL_UPLOAD_PATH = os.path.join(BASEDIR, 'uploads')
     XPMALL_ALLOWED_UPLOAD_TYPE = ["image/jpeg", "image/png", "image/gif"]
-    XPMALL_IMAGE_SIZE = {'small': 400,
-                         'medium': 800}
+    XPMALL_IMAGE_SIZE = {'small': 400, 'medium': 800}
     XPMALL_IMAGE_SUFFIX = {
         # 小图后缀
         'small': '_s',
@@ -61,15 +62,16 @@ class BaseConfig(object):
     }
 
 
+# 开发环境配置
 class DevelopmentConfig(BaseConfig):
     CKEDITOR_PKG_TYPE = "full"
+
     # sqlite数据库
     # SQLALCHEMY_DATABASE_URI = prefix + os.path.join(basedir, 'data.db')
     # mysql数据库
     SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://root:123456@127.0.0.1/mymall"
-    # alipay
-    # 支付宝支付exit
-    # 支付宝接口地址
+
+    # 支付宝接口配置
     ALIPAY = {
         "DEBUG": True,
         "LOG_PATH": os.path.join("logs/alipay.log"),
@@ -85,13 +87,13 @@ class DevelopmentConfig(BaseConfig):
         "ALIPAY_RETURN_URL": "http://%s/mall/pay/alipay/return" % DOMAIN,
     }
 
+    # 微信支付接口配置
     WECHAT = {
         # wechat
         # 微信公众号appid与apsecret
         "WECHAT_APPID": "公众号id",
         "WECHAT_APPSECRET": "公众号证书"
     }
-
     WXPAY = {
         # wechatPay
         # 微信支付应用id与商户id
@@ -110,30 +112,29 @@ class DevelopmentConfig(BaseConfig):
     }
 
 
+# 生产环境配置
 class ProductionConfig(BaseConfig):
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', prefix + os.path.join(basedir, 'data.db'))
     APP_ID = os.getenv('APP_ID')
     APP_TOKEN = os.getenv('APPTOKEN')
     CACHE_TYPE = "filesystem"
 
+    # 支付宝接口配置
     ALIPAY = {
         "DEBUG": False,
         "ALIPAY_SIGN_TYPE": "RSA2",
         "ALIPAY_APP_ID": '',
         "ALIPAY_APP_KEY_FILE": os.path.join(basedir, "alipay_cert/alipay_public_key"),
-
         "ALIPAY_NOTIFY_URL": "",
         "ALIPAY_RETURN_URL": "",
     }
 
+    # 微信支付接口配置
     WECHAT = {
-
         "WECHAT_APPID": "",
         "WECHAT_APPSECRET": ""
     }
-
     WXPAY = {
-
         "APP_ID": "",
         "MCH_ID": "",
         "KEY": "",
@@ -143,7 +144,4 @@ class ProductionConfig(BaseConfig):
     }
 
 
-config = {
-    'development': DevelopmentConfig,
-    'production': ProductionConfig
-}
+config = {'development': DevelopmentConfig, 'production': ProductionConfig}

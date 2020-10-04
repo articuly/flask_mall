@@ -1,22 +1,25 @@
-# -*- coding=utf-8 -*-
+# coding:utf-8
 import math
-from flask import Flask, current_app, request, \
-    render_template
+from flask import current_app, request, render_template
 from xp_mall.mall import mall_module
 from xp_mall.models.order import Order
 from xp_mall.extensions import db, csrf
 from xp_mall.utils import get_pay_obj
 
 
+# 订单付款后确认
 @csrf.exempt
 @mall_module.route('/pay/<string:payment>/<string:call_type>', methods=['GET', 'POST'])
 def pay_confirm(payment, call_type):
     current_app.logger.debug(request)
+    # 获取付款方式
     pay = get_pay_obj(payment)
     res, order_info, out_html = pay.confirm_pay(request)
     if res:
+        # 返回支付成功前端提示
         if call_type == "return":
             return render_template("member/order/success.html")
+        # 返回支付结果
         elif call_type == "notify":
             out_trade_no = order_info['out_trade_no']
             order = Order.query.filter_by(order_no=out_trade_no, status=0).first()

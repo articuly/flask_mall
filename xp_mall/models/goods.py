@@ -1,21 +1,11 @@
-# -*- coding=utf-8 -*-
+# coding:utf-8
 
 from xp_mall.extensions import db, whooshee
-from datetime import datetime
 
 
+# 商品类
 @whooshee.register_model("goods_title", "detail")
 class Goods(db.Model):
-    '''
-    商品模型
-    goods_id : 商品主键
-    goods_title : 商品标题
-    goods_subhead : 商品副标题
-    category_id : 商品分类
-    main_pic : 商品主图
-    price : 商品价格
-    detail : 商品详情
-    '''
     goods_id = db.Column(db.Integer, primary_key=True)
     goods_title = db.Column(db.String(100))
     goods_subhead = db.Column(db.String(100))

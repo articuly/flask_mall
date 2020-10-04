@@ -1,22 +1,21 @@
-# -*- coding=utf-8 -*-
+# coding:utf-8
 import os, uuid
+from datetime import date
 from PIL import Image
 from flask import Blueprint, request, render_template
 from flask import current_app
 from flask_login import login_required
 from flask import jsonify
-
 from xp_mall.extensions import csrf
 from xp_mall.admin import admin_module
 
 
+# 上传函数
 def upload(f):
-    # 任何时候，后端都不要相信前端
-    # 的数据检测结果，比如上传类型限制，所有必要的检查都须放在
-    # 后端进行检测
+    # 任何时候，后端都不要相信前端的数据检测结果
+    # 上传类型限制，所有必要的检查都须放在后端进行检测
     message = {"result": "", "error": "", "filepath_list": []}
-    if f.content_type not in \
-            current_app.config['XPMALL_ALLOWED_UPLOAD_TYPE']:
+    if f.content_type not in current_app.config['XPMALL_ALLOWED_UPLOAD_TYPE']:
         print(f.content_type)
         message['result'] = "fail"
         message['error'] = "上传文件类型不对"
@@ -26,11 +25,11 @@ def upload(f):
     path, full_path = get_dir()
     new_file_name = create_filename(f.filename)
     filename = os.path.join(path, new_file_name)
-    file_path = os.path.join(full_path,
-                             new_file_name)
+    file_path = os.path.join(full_path, new_file_name)
     try:
         f.save(file_path)
     except Exception as e:
+        print(e)
         message['result'] = "fail"
         message['error'] = "文件保存到 %s 失败" % file_path
         return message
@@ -39,6 +38,7 @@ def upload(f):
     return message
 
 
+# 批量上传
 @admin_module.route("/upload_multiple", methods=['post'])
 def upload_multiple():
     csrf.protect()
@@ -56,6 +56,7 @@ def upload_multiple():
         return jsonify(message)
 
 
+# CK编辑器上传
 @admin_module.route("/ckeditor", methods=['post'])
 def ckeditor_upload():
     csrf.protect()
@@ -79,6 +80,7 @@ def ckeditor_upload():
         return jsonify(message)
 
 
+# CK编辑器浏览上传文件
 @admin_module.route("/ckeditor/browser", methods=['get'])
 def ckeditor_browser():
     images = []
@@ -91,12 +93,8 @@ def ckeditor_browser():
     return render_template("upload/browser.html", images=images)
 
 
+# 生成文件存放路径
 def get_dir():
-    '''
-    生成文件存放路径
-    :return: 存放文件路径
-    '''
-    from datetime import date
     # 上传文件存放路径
     base_path = current_app.config['XPMALL_UPLOAD_PATH']
     # 根据上传的日期存放
@@ -109,18 +107,14 @@ def get_dir():
     return path, full_path
 
 
+# 生成带有随机串的文件名
 def create_filename(filename):
-    '''
-    生成随机文件名
-    :param filename:
-    :return:
-    '''
-    import uuid
     ext = os.path.splitext(filename)[1]
     new_file_name = str(uuid.uuid4()) + ext
     return new_file_name
 
 
+# 缩放图片大小
 def resize_image(image, filename, base_width):
     base_size = current_app.config['XPMALL_IMAGE_SIZE'][base_width]
     filename, ext = os.path.splitext(filename)
@@ -138,6 +132,7 @@ def resize_image(image, filename, base_width):
     return filename
 
 
+# 上传缩略图
 @admin_module.route("upload_thumb", methods=["post"])
 def upload_thumb():
     if request.method == 'POST' and 'upload' in request.files:
@@ -146,10 +141,7 @@ def upload_thumb():
         if master_filename != "fail":
             filename_s = resize_image(f, master_filename, 'small')
             filename_m = resize_image(f, master_filename, 'medium')
-
-            return jsonify({"o": master_filename,
-                            "s": filename_s,
-                            "m": filename_m
-                            })
+            return jsonify({"o": master_filename, "s": filename_s,
+                            "m": filename_m})
         else:
             return "", 404

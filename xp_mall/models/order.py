@@ -1,13 +1,9 @@
-# -*- coding=utf-8 -*-
-from datetime import datetime
+# coding:utf-8
+
 from xp_mall.extensions import db, whooshee
-from xp_mall.models.member import Member
 
 
-# order_course = db.Table('order_course',
-#                        db.Column('order_id', db.ForeignKey("order.id")),
-#                        db.Column('order_course_id', db.ForeignKey('order_course.id')))
-
+# 订单类
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     order_no = db.Column(db.String(50))
@@ -24,6 +20,7 @@ class Order(db.Model):
     logistics = db.relationship('Logistics', back_populates='order', cascade='all, delete-orphan')
 
 
+# 订单商品类，两表的多对多关系要通过中间表连接
 class OrderGoods(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     goods_id = db.Column(db.Integer, db.ForeignKey('goods.goods_id'))
@@ -38,6 +35,7 @@ class OrderGoods(db.Model):
     goods = db.relationship('Goods')
 
 
+# 购物车类
 class Cart(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     goods_id = db.Column(db.Integer, db.ForeignKey('goods.goods_id'))
@@ -48,6 +46,7 @@ class Cart(db.Model):
     goods = db.relationship('Goods')
 
 
+# 物流信息类
 class Logistics(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     order_id = db.Column(db.Integer, db.ForeignKey('order.id'))
