@@ -7,7 +7,7 @@ from flask_login import current_user
 
 from xp_mall.models.member import Member
 from xp_mall.models.goods import Goods
-from xp_mall.models.order import Order, OrderGoods, Cart
+from xp_mall.models.order import Order, OrderGoods, Cart, Logistics
 from xp_mall.extensions import db
 from xp_mall.member import member_module
 from xp_mall.forms.order import SearchForm
@@ -66,7 +66,7 @@ def manage_orders(page):
     if status:
         form.status = status
         order_query = order_query.filter_by(status=status)
-    #
+
     keyword = request.args.get("keyword", None)
     if keyword:
         form.keyword.data = keyword
@@ -88,6 +88,18 @@ def manage_orders(page):
     pagination = order_query.paginate(
         page, current_app.config['XPMALL_MANAGE_GOODS_PER_PAGE'])
     condition = request.query_string.decode()
+
+    # 查询订单物流信息
+    q = order_query.filter(Order.status == '2')
+    user_order = [item.id for item in q.all()]
+    if user_order:
+        print(user_order)
+        sent_order = Logistics.query.filter(Logistics.order_id.in_(user_order))
+        # for row in sended_order:
+        #     print(row.logis_company, row.logis_number)
+        return render_template('member/order/order_list.html', page=page,
+                               pagination=pagination, form=form,
+                               condition=condition, sent_order=sent_order)
     return render_template('member/order/order_list.html', page=page,
                            pagination=pagination, form=form,
                            condition=condition)
@@ -104,3 +116,20 @@ def delete_order(order_id):
         return "ok"
     else:
         return 'fail'
+
+
+@member_module.route('/order/receive_goods/<int:order_id>', methods=['post'])
+def receive_goods(order_id):
+    order = Order.query.get_or_404(order_id)
+    logis = Logistics.query.filter(Logistics.order_id == order_id).one()
+    # 用户只能确认自己的订单
+    if int(order.buyer) == current_user.user_id:
+        order.status = 3
+        logis.status = 3
+        try:
+            db.session.commit()
+        except Exception as e:
+            print(e)
+            return 'fail'
+        else:
+            return 'ok'

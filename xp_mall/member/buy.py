@@ -30,7 +30,7 @@ def create_order():
             order_no=get_order_no(),
             subject="测试商城订单",
             total_price=total_price,
-            status=0,
+            status='0',
             buyer=current_user.user_id,
             payment=form.payment.data,
             createTime=datetime.datetime.now()
@@ -39,7 +39,7 @@ def create_order():
             receiver=form.receiver.data,
             mobile=form.mobile.data,
             address=form.address.data,
-            status=""
+            status='0',
         )
         # 记录订单商品信息
         # 商品价格是变动的，需要记录下单时价格，以备核对
@@ -73,11 +73,11 @@ def pay_order(order_no):
     :param order_no:
     :return:
     '''
-    order = Order.query.filter_by(order_no=order_no, status=0, buyer=current_user.user_id).first()
+    order = Order.query.filter_by(order_no=order_no, status='0', buyer=current_user.user_id).first()
 
     if not order:
         return redirect(url_for('.index'))
-    elif order.status == 1:
+    elif order.status == '1':
         return redirect(url_for('.index'))
     payment = order.payment
     pay = get_pay_obj(order.payment)

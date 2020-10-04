@@ -51,6 +51,7 @@ class Cart(db.Model):
 class Logistics(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     order_id = db.Column(db.Integer, db.ForeignKey('order.id'))
+    status = db.Column(db.String(10))
     receiver = db.Column(db.String(20))
     mobile = db.Column(db.String(30))
     address = db.Column(db.String(100))

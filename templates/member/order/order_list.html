@@ -3,6 +3,14 @@
     <title>清心涟漪 | 用户中心 | 我的订单</title>
 {% endblock %}
 
+{% block style %}
+    <style type="text/css">
+        .btn a {
+            color: white;
+        }
+    </style>
+{% endblock %}
+
 {% block  content %}
     <!-- Breadcrumb Section Begin -->
     <div class="breacrumb-section">
@@ -55,7 +63,7 @@
                             <th>订单创建时间</th>
                             <th>订单状态</th>
                             <th>操作</th>
-                            <th>信息</th>
+                            <th>相关信息</th>
                         </tr>
                         </thead>
                         {% for order in pagination.items %}
@@ -63,23 +71,47 @@
                                 <td>{{ order.order_no }} </td>
                                 <td>{{ order.subject }}</td>
                                 <td>{{ order.createTime }}</td>
-                                <td>
-                                    {% if order.status != "0" %}
-                                        {{ order.status | get_order_status }}
-                                    {% else %}
-                                        <a href="{{ url_for("member.pay_order",order_no=order.order_no) }}">立即付款</a>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {% if order.status == '4' %}
-                                        <span>订单已取消</span>
-                                    {% else %}
-                                        <button type="submit" class="btn btn-danger btn-sm delete-btn"
-                                                data-href="{{ url_for('member.delete_order', order_id=order.id) }}">取消
+                                <td>{{ order.status | get_order_status }}</td>
+                                {% if order.status == '0' %}
+                                    <td>
+                                        <button type="submit" class="btn btn-info btn-sm">
+                                            <a href="{{ url_for("member.pay_order",order_no=order.order_no) }}">付款</a>
                                         </button>
-                                    {% endif %}
-                                </td>
-                                <td>请等待</td>
+                                        <button type="submit" class="btn btn-danger btn-sm delete-btn"
+                                                data-href="{{ url_for('member.delete_order', order_id=order.id) }}">
+                                            取消
+                                        </button>
+                                    </td>
+                                    <td>无</td>
+                                {% elif order.status == '1' %}
+                                    <td>
+                                        <button type="submit" class="btn btn-danger btn-sm delete-btn"
+                                                data-href="{{ url_for('member.delete_order', order_id=order.id) }}">
+                                            取消
+                                        </button>
+                                    </td>
+                                    <td>请等待</td>
+                                {% elif order.status == '2' %}
+                                    <td>
+                                        <button type="submit" class="btn btn-info btn-sm receive_goods"
+                                                data-href="{{ url_for('member.receive_goods', order_id=order.id) }}">
+                                            收货
+                                        </button>
+                                    </td>
+                                    <td>
+                                        {% for row in sent_order %}
+                                            {% if row.order_id == order.id %}
+                                                <span>{{ row.logis_company }}，{{ row.logis_number }}</span>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                {% elif order.status == '3' %}
+                                    <td></td>
+                                    <td>订单交易成功</td>
+                                {% elif order.status == '4' %}
+                                    <td></td>
+                                    <td><span>订单已取消</span></td>
+                                {% endif %}
                             </tr>
                         {% endfor %}
                     </table>
@@ -140,7 +172,8 @@
                         data: {},
                         success: function (data) {
                             if (data == "ok") {
-                                console.log(target.parent().parent().remove())
+                                window.location.reload()
+                                {#console.log(target.parent().parent().remove())#}
                             }
                         },
                     })
@@ -158,6 +191,32 @@
             $(".mainbody").load($.trim(link_url))
         })
 
-
+        // 确认收货
+        $(function () {
+            $(".receive_goods").on("click", function (event) {
+                var target = $(event.target);
+                url = $(this).attr("data-href")
+                console.log(url)
+                var message = confirm("确认收到货物?")
+                if (message) {
+                    $.ajax({
+                        url: url,
+                        type: "post",
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader("X-CSRFToken", csrf_token)
+                        },
+                        data: {},
+                        success: function (data) {
+                            if (data == "ok") {
+                                console.log('receive goods')
+                                window.location.reload()
+                            }
+                        },
+                    })
+                } else {
+                    console.log("false")
+                }
+            })
+        })
     </script>
 {% endblock %}

@@ -62,9 +62,11 @@
                                 <td>{{ order.createTime }}</td>
                                 <td>{{ order.status | get_order_status }}</td>
                                 <td>
-                                    {% if order.status == '4' %}
-                                        <span>订单已取消</span>
-                                    {% else %}
+                                    {% if order.status == '0' %}
+                                        <button type="submit" class="btn btn-danger btn-sm delete-btn"
+                                                data-href="{{ url_for('admin.delete_order', order_id=order.id) }}">取消
+                                        </button>
+                                    {% elif order.status == '1' %}
                                         <button type="button" class="btn btn-info btn-sm btn-primary logis_send"
                                                 data-toggle="modal" data-remote="{{ order.id }}"
                                                 data-target="#sendOrder_{{ order.id }}">
@@ -73,6 +75,16 @@
                                         <button type="submit" class="btn btn-danger btn-sm delete-btn"
                                                 data-href="{{ url_for('admin.delete_order', order_id=order.id) }}">取消
                                         </button>
+                                    {% elif order.status == '2' %}
+                                        {% for row in sent_order %}
+                                            {% if row.order_id == order.id %}
+                                                <span>{{ row.logis_company }}，{{ row.logis_number }}</span>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% elif order.status == '3' %}
+                                        订单交易成功
+                                    {% elif order.status == '4' %}
+                                        <span>订单已取消</span>
                                     {% endif %}
                                 </td>
                             </tr>
@@ -212,7 +224,8 @@
                         data: {},
                         success: function (data) {
                             if (data == "ok") {
-                                console.log(target.parent().parent().remove())
+                                window.location.reload()
+                                {#console.log(target.parent().parent().remove())#}
                             }
                         },
                     })

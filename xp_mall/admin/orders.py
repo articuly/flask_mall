@@ -23,7 +23,7 @@ def manage_orders(page):
     if status:
         form.status = status
         order_query = order_query.filter_by(status=status)
-    #
+
     keyword = request.args.get("keyword", None)
     if keyword:
         form.keyword.data = keyword
@@ -45,6 +45,13 @@ def manage_orders(page):
     pagination = order_query.paginate(
         page, current_app.config['XPMALL_MANAGE_GOODS_PER_PAGE'])
     condition = request.query_string.decode()
+
+    # 查询订单物流信息
+    sent_order = Logistics.query.filter(Logistics.status == '2').all()
+    if sent_order:
+        return render_template('admin/order/order_list.html', page=page,
+                               pagination=pagination, form=form,
+                               condition=condition, sent_order=sent_order)
     return render_template('admin/order/order_list.html', page=page,
                            pagination=pagination, form=form,
                            condition=condition)
@@ -95,6 +102,7 @@ def logis_edit(order_id):
         # print(logis_company, logis_number)
         logistics.logis_company = logis_company
         logistics.logis_number = logis_number
+        logistics.status = 2
         order.status = 2
         try:
             db.session.add(order)
