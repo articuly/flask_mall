@@ -6,8 +6,7 @@ import re
 from logging.handlers import RotatingFileHandler
 
 import click
-from flask import Flask, request, \
-    send_from_directory, redirect, url_for
+from flask import Flask, request, send_from_directory, render_template
 from flask_login import current_user, login_manager
 from flask_sqlalchemy import get_debug_queries
 from flask_wtf.csrf import CSRFError
@@ -42,12 +41,19 @@ def create_app(config_name=None):
     app.config.from_object(config[config_name])
 
     @app.route('/')
-    def index():
-        '''
-        网站默认页面为店铺商品列表页面
-        :return:
-        '''
-        return redirect(url_for("mall.index"))
+    def html():
+        if current_user.user_id != 0:
+            cart = Cart.query.filter_by(user_id=current_user.user_id).all()
+            cart_amount, cart_total = 0, 0
+            if cart:
+                for item in cart:
+                    cart_amount = cart_amount + item.amount
+                    cart_total = cart_total + item.goods.price * item.amount
+                print(cart_amount, cart_total)
+                return render_template('index.html', cart_amount=cart_amount, cart_total=cart_total)
+            else:
+                return render_template('index.html', cart_amount=cart_amount, cart_total=cart_total)
+        return render_template('index.html')
 
     @app.route('/uploads/<path:filename>')
     def get_image(filename):
@@ -68,20 +74,9 @@ def create_app(config_name=None):
 # 模板上下文
 def register_template_context(app):
     @app.context_processor
-    def getCart():
-        cart = Cart.query.filter_by(user_id=current_user.user_id).all()
-        cart_amount, cart_total = 0, 0
-        if cart:
-            for item in cart:
-                cart_amount = cart_amount + item.amount
-                cart_total = cart_total + item.goods.price * item.amount
-            print(cart_amount, cart_total)
-            return {'cart_amount': cart_amount, 'cart_total': cart_total}
-        else:
-            return {'cart_amount': cart_amount, 'cart_total': cart_total}
-
-    # def getTopCates():
-
+    def getRecomendGood():
+        recommend_goods = Goods.query.filter_by(is_recommend=1).order_by(Goods.create_time.desc()).limit(10)
+        return {'recommend_goods': recommend_goods}
 
 def register_logging(app):
     '''

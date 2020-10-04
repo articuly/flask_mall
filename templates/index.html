@@ -8,7 +8,7 @@
     <!-- Hero Section Begin -->
     <section class="hero-section">
         <div class="hero-items owl-carousel">
-            <div class="single-hero-items set-bg" data-setbg="img/hero-1.jpg">
+            <div class="single-hero-items set-bg" data-setbg="{{ url_for('static', filename='img/hero-1.jpg') }}">
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-5">
@@ -24,7 +24,7 @@
                     </div>
                 </div>
             </div>
-            <div class="single-hero-items set-bg" data-setbg="img/hero-2.jpg">
+            <div class="single-hero-items set-bg" data-setbg="{{ url_for('static', filename='img/hero-2.jpg') }}">
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-5">
@@ -49,108 +49,54 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-3">
-                    <div class="product-large set-bg" data-setbg="img/products/women-large.jpg">
+                    <div class="product-large set-bg"
+                         data-setbg="{{ url_for('static', filename='img/products/women-large.jpg') }}">
                         <h2>热门商品</h2>
-                        <a href="#">更多</a>
+                        <a href="{{ url_for('mall.index') }}">更多</a>
                     </div>
                 </div>
                 <div class="col-lg-8 offset-lg-1">
                     <div class="filter-control">
                         <ul>
                             <li></li>
-                            <li></li>
-                            <li></li>
                         </ul>
                     </div>
+                    <br>
+                    <br>
                     <div class="product-slider owl-carousel">
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="img/products/women-1.jpg" alt="">
-                                <div class="sale">促销</div>
-                                <!--                                <div class="icon">-->
-                                <!--                                    <i class="icon_heart_alt"></i>-->
-                                <!--                                </div>-->
-                                <ul>
-                                    <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                    <li class="quick-view"><a href="#">加入购物车</a></li>
-                                </ul>
-                            </div>
-                            <div class="pi-text">
-                                <div class="catagory-name">分类名</div>
-                                <a href="#">
-                                    <h5>标题</h5>
-                                </a>
-                                <div class="product-price">
-                                    14.00
+                        {% for item in recommend_goods %}
+                            {% if loop.index <= 4 %}
+                                <div class="product-item">
+                                    <div class="pi-pic">
+                                        <img src="/uploads/{{ item.thumb }}" alt="">
+                                        <div class="sale">促销</div>
+                                        <!--                                <div class="icon">-->
+                                        <!--                                    <i class="icon_heart_alt"></i>-->
+                                        <!--                                </div>-->
+                                        <ul>
+                                            <li class="w-icon active"><a><i class="icon_bag_alt"></i></a></li>
+                                            <li class="quick-view">
+                                                {% if current_user.user_id %}
+                                                    <a href="" class="cart-btn"
+                                                       data-url="{{ url_for("member.add_cart", goods_id=item.goods_id) }}">加入购物车</a>
+                                                    </li>
+                                                {% else %}
+                                                    <a href="{{ url_for('auth.login') }}">加入购物车</a>
+                                                {% endif %}
+                                        </ul>
+                                    </div>
+                                    <div class="pi-text">
+                                        <div class="catagory-name">{{ item.category.name }}</div>
+                                        <a href="{{ url_for("mall.show_goods", category_id=item.category_id, goods_id=item.goods_id) }}">
+                                            <h5>{{ item.goods_title }}</h5>
+                                        </a>
+                                        <div class="product-price">
+                                            ￥{{ item.price }}
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="img/products/women-2.jpg" alt="">
-                                <div class="icon">
-                                    <i class="icon_heart_alt"></i>
-                                </div>
-                                <ul>
-                                    <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                    <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                    <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-                                </ul>
-                            </div>
-                            <div class="pi-text">
-                                <div class="catagory-name">Shoes</div>
-                                <a href="#">
-                                    <h5>Guangzhou sweater</h5>
-                                </a>
-                                <div class="product-price">
-                                    $13.00
-                                </div>
-                            </div>
-                        </div>
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="img/products/women-3.jpg" alt="">
-                                <div class="icon">
-                                    <i class="icon_heart_alt"></i>
-                                </div>
-                                <ul>
-                                    <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                    <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                    <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-                                </ul>
-                            </div>
-                            <div class="pi-text">
-                                <div class="catagory-name">Towel</div>
-                                <a href="#">
-                                    <h5>Pure Pineapple</h5>
-                                </a>
-                                <div class="product-price">
-                                    $34.00
-                                </div>
-                            </div>
-                        </div>
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="img/products/women-4.jpg" alt="">
-                                <div class="icon">
-                                    <i class="icon_heart_alt"></i>
-                                </div>
-                                <ul>
-                                    <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                    <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                    <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-                                </ul>
-                            </div>
-                            <div class="pi-text">
-                                <div class="catagory-name">Towel</div>
-                                <a href="#">
-                                    <h5>Converse Shoes</h5>
-                                </a>
-                                <div class="product-price">
-                                    $34.00
-                                </div>
-                            </div>
-                        </div>
+                            {% endif %}
+                        {% endfor %}
                     </div>
                 </div>
             </div>
@@ -159,7 +105,7 @@
     <!-- Women Banner Section End -->
 
     <!-- Deal Of The Week Section Begin-->
-    <section class="deal-of-week set-bg spad" data-setbg="img/time-bg.jpg">
+    <section class="deal-of-week set-bg spad" data-setbg="{{ url_for('static', filename='img/time-bg.jpg') }}">
         <div class="container">
             <div class="col-lg-6 text-center">
                 <div class="section-title">
@@ -167,13 +113,14 @@
                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed<br/> do ipsum dolor sit amet,
                         consectetur adipisicing elit </p>
                     <div class="product-price">
-                        3000
-                        <span>/ 手机</span>
+                        ￥1200
+                        <span>/ 旅行手提袋</span>
                     </div>
                 </div>
                 <div class="countdown-timer" id="countdown">
+                    {# JS动态计算 #}
                     <div class="cd-item">
-                        <span>16</span>
+                        <span>2</span>
                         <p>Days</p>
                     </div>
                     <div class="cd-item">
@@ -203,105 +150,51 @@
                     <div class="filter-control">
                         <ul>
                             <li></li>
-                            <li></li>
-                            <li></li>
                         </ul>
                     </div>
+                    <br>
+                    <br>
                     <div class="product-slider owl-carousel">
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="img/products/man-1.jpg" alt="">
-                                <div class="sale">推荐</div>
-                                <!--                                <div class="icon">-->
-                                <!--                                    <i class="icon_heart_alt"></i>-->
-                                <!--                                </div>-->
-                                <ul>
-                                    <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                    <li class="quick-view"><a href="#">加入购物车</a></li>
-                                </ul>
-                            </div>
-                            <div class="pi-text">
-                                <div class="catagory-name">分类</div>
-                                <a href="#">
-                                    <h5>标题</h5>
-                                </a>
-                                <div class="product-price">
-                                    $14.00
+                        {% for item in recommend_goods %}
+                            {% if 4 < loop.index <= 8 %}
+                                <div class="product-item">
+                                    <div class="pi-pic">
+                                        <img src="/uploads/{{ item.thumb }}" alt="">
+                                        <div class="sale">推荐</div>
+                                        <!--                                <div class="icon">-->
+                                        <!--                                    <i class="icon_heart_alt"></i>-->
+                                        <!--                                </div>-->
+                                        <ul>
+                                            <li class="w-icon active"><a><i class="icon_bag_alt"></i></a></li>
+                                            <li class="quick-view">
+                                                {% if current_user.user_id %}
+                                                    <a href="" class="cart-btn"
+                                                       data-url="{{ url_for("member.add_cart", goods_id=item.goods_id) }}">加入购物车</a>
+                                                    </li>
+                                                {% else %}
+                                                    <a href="{{ url_for('auth.login') }}">加入购物车</a>
+                                                {% endif %}
+                                        </ul>
+                                    </div>
+                                    <div class="pi-text">
+                                        <div class="catagory-name">{{ item.category.name }}</div>
+                                        <a href="{{ url_for("mall.show_goods", category_id=item.category_id, goods_id=item.goods_id) }}">
+                                            <h5>{{ item.goods_title }}</h5>
+                                        </a>
+                                        <div class="product-price">
+                                            ￥{{ item.price }}
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="img/products/man-2.jpg" alt="">
-                                <div class="icon">
-                                    <i class="icon_heart_alt"></i>
-                                </div>
-                                <ul>
-                                    <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                    <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                    <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-                                </ul>
-                            </div>
-                            <div class="pi-text">
-                                <div class="catagory-name">Shoes</div>
-                                <a href="#">
-                                    <h5>Guangzhou sweater</h5>
-                                </a>
-                                <div class="product-price">
-                                    $13.00
-                                </div>
-                            </div>
-                        </div>
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="img/products/man-3.jpg" alt="">
-                                <div class="icon">
-                                    <i class="icon_heart_alt"></i>
-                                </div>
-                                <ul>
-                                    <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                    <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                    <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-                                </ul>
-                            </div>
-                            <div class="pi-text">
-                                <div class="catagory-name">Towel</div>
-                                <a href="#">
-                                    <h5>Pure Pineapple</h5>
-                                </a>
-                                <div class="product-price">
-                                    $34.00
-                                </div>
-                            </div>
-                        </div>
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="img/products/man-4.jpg" alt="">
-                                <div class="icon">
-                                    <i class="icon_heart_alt"></i>
-                                </div>
-                                <ul>
-                                    <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                    <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                    <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-                                </ul>
-                            </div>
-                            <div class="pi-text">
-                                <div class="catagory-name">Towel</div>
-                                <a href="#">
-                                    <h5>Converse Shoes</h5>
-                                </a>
-                                <div class="product-price">
-                                    $34.00
-                                </div>
-                            </div>
-                        </div>
+                            {% endif %}
+                        {% endfor %}
                     </div>
                 </div>
                 <div class="col-lg-3 offset-lg-1">
-                    <div class="product-large set-bg m-large" data-setbg="img/products/man-large.jpg">
+                    <div class="product-large set-bg m-large"
+                         data-setbg="{{ url_for('static', filename='img/products/man-1.jpg') }}">
                         <h2>推荐商品</h2>
-                        <a href="#">更多</a>
+                        <a href="{{ url_for('mall.index') }}">更多</a>
                     </div>
                 </div>
             </div>
@@ -311,37 +204,37 @@
 
     <!-- Instagram Section Begin -->
     <div class="instagram-photo">
-        <div class="insta-item set-bg" data-setbg="img/insta-1.jpg">
+        <div class="insta-item set-bg" data-setbg="{{ url_for('static', filename='img/insta-1.jpg') }}">
             <div class="inside-text">
                 <i class="ti-instagram"></i>
                 <h5><a href="#"></a></h5>
             </div>
         </div>
-        <div class="insta-item set-bg" data-setbg="img/insta-2.jpg">
+        <div class="insta-item set-bg" data-setbg="{{ url_for('static', filename='img/insta-2.jpg') }}">
             <div class="inside-text">
                 <i class="ti-instagram"></i>
                 <h5><a href="#"></a></h5>
             </div>
         </div>
-        <div class="insta-item set-bg" data-setbg="img/insta-3.jpg">
+        <div class="insta-item set-bg" data-setbg="{{ url_for('static', filename='img/insta-3.jpg') }}">
             <div class="inside-text">
                 <i class="ti-instagram"></i>
                 <h5><a href="#"></a></h5>
             </div>
         </div>
-        <div class="insta-item set-bg" data-setbg="img/insta-4.jpg">
+        <div class="insta-item set-bg" data-setbg="{{ url_for('static', filename='img/insta-4.jpg') }}">
             <div class="inside-text">
                 <i class="ti-instagram"></i>
                 <h5><a href="#"></a></h5>
             </div>
         </div>
-        <div class="insta-item set-bg" data-setbg="img/insta-5.jpg">
+        <div class="insta-item set-bg" data-setbg="{{ url_for('static', filename='img/insta-5.jpg') }}">
             <div class="inside-text">
                 <i class="ti-instagram"></i>
                 <h5><a href="#"></a></h5>
             </div>
         </div>
-        <div class="insta-item set-bg" data-setbg="img/insta-6.jpg">
+        <div class="insta-item set-bg" data-setbg="{{ url_for('static', filename='img/insta-6.jpg') }}">
             <div class="inside-text">
                 <i class="ti-instagram"></i>
                 <h5><a href="#"></a></h5>
@@ -363,7 +256,7 @@
             <div class="row">
                 <div class="col-lg-4 col-md-6">
                     <div class="single-latest-blog">
-                        <img src="img/latest-1.jpg" alt="">
+                        <img src="{{ url_for('static', filename='img/latest-1.jpg') }}" alt="">
                         <div class="latest-text">
                             <div class="tag-list">
                                 <div class="tag-item">
@@ -384,7 +277,7 @@
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <div class="single-latest-blog">
-                        <img src="img/latest-2.jpg" alt="">
+                        <img src="{{ url_for('static', filename='img/latest-2.jpg') }}" alt="">
                         <div class="latest-text">
                             <div class="tag-list">
                                 <div class="tag-item">
@@ -405,7 +298,7 @@
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <div class="single-latest-blog">
-                        <img src="img/latest-3.jpg" alt="">
+                        <img src="{{ url_for('static', filename='img/latest-3.jpg') }}" alt="">
                         <div class="latest-text">
                             <div class="tag-list">
                                 <div class="tag-item">
@@ -430,7 +323,7 @@
                     <div class="col-lg-4">
                         <div class="single-benefit">
                             <div class="sb-icon">
-                                <img src="img/icon-1.png" alt="">
+                                <img src="{{ url_for('static', filename='img/icon-1.png') }}" alt="">
                             </div>
                             <div class="sb-text">
                                 <h6>包邮</h6>
@@ -441,7 +334,7 @@
                     <div class="col-lg-4">
                         <div class="single-benefit">
                             <div class="sb-icon">
-                                <img src="img/icon-2.png" alt="">
+                                <img src="{{ url_for('static', filename='img/icon-2.png') }}" alt="">
                             </div>
                             <div class="sb-text">
                                 <h6>准时送货</h6>
@@ -452,7 +345,7 @@
                     <div class="col-lg-4">
                         <div class="single-benefit">
                             <div class="sb-icon">
-                                <img src="img/icon-3.png" alt="">
+                                <img src="{{ url_for('static', filename='img/icon-3.png') }}" alt="">
                             </div>
                             <div class="sb-text">
                                 <h6>安全支付</h6>
@@ -465,4 +358,23 @@
         </div>
     </section>
     <!-- Latest Blog Section End -->
+
+    <script type="text/javascript">
+        // 添加到购物车
+        $(".cart-btn").on("click", function () {
+            $.ajax({
+                url: $(this).data("url"),
+                type: "post",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token() }}')
+                },
+                dataType: "json",
+                success: function (data) {
+                    if (data.result) {
+                        alert("添加成功")
+                    }
+                }
+            })
+        })
+    </script>
 {% endblock %}
