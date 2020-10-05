@@ -12,12 +12,12 @@ class Member(db.Model, UserMixin):
     password_hash = db.Column(db.String(128))
     email = db.Column(db.String(50))
     reg_date = db.Column(db.DateTime)
-    reg_ip = db.Column(db.String(20))
+    reg_ip = db.Column(db.String(50))
     reg_sex = db.Column(db.String(2))
-    last_login_ip = db.Column(db.String(20))
+    last_login_ip = db.Column(db.String(50))
     last_login_time = db.Column(db.DateTime)
-    mobile = db.Column(db.String(12))
-    is_approve = db.Column(db.Integer)
+    mobile = db.Column(db.String(20))
+    is_approve = db.Column(db.Boolean)
     is_admin = db.Column(db.Boolean)
 
     # 加密用户密码

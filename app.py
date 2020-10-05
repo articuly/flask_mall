@@ -213,3 +213,6 @@ def register_request_handlers(app):
 if __name__ == "__main__":
     app = create_app("development")
     app.run(host="127.0.0.1", port=8126, debug=True)
+
+# 管理员账号为articuly, admin。普通账号为linsl, noone, someone, anyone, everyone
+# 密码统一为123654

@@ -37,6 +37,10 @@ alipay-python = "*"
 flask-alipay = "*"
 click = "*"
 pipfile = "*"
+simplejson = "*"
+flask-wxpay-plus = "*"
+mysql-connector-python = "*"
+email-validator = "*"
 
 [requires]
 python_version = "3.7"

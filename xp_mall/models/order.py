@@ -13,7 +13,7 @@ class Order(db.Model):
     seller = db.Column(db.String(50))
     buyer = db.Column(db.String(50))
     createTime = db.Column(db.DATETIME)
-    payment = db.Column(db.String(30))
+    payment = db.Column(db.String(20))
     paytime = db.Column(db.DATETIME)
 
     goods = db.relationship('OrderGoods', back_populates='order', cascade='all, delete-orphan')
@@ -54,7 +54,7 @@ class Logistics(db.Model):
     receiver = db.Column(db.String(20))
     mobile = db.Column(db.String(30))
     address = db.Column(db.String(100))
-    logis_company = db.Column(db.String(50))
-    logis_number = db.Column(db.String(20))
+    logis_company = db.Column(db.String(20))
+    logis_number = db.Column(db.String(30))
 
     order = db.relationship('Order')
