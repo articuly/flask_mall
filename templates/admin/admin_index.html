@@ -2,6 +2,7 @@
 
 {% block title %}
     <title>清心涟漪 | 管理后台</title>
+    <script type="text/javascript" src="https://assets.pyecharts.org/assets/echarts.min.js"></script>
 {% endblock %}
 
 {% block  content %}
@@ -20,9 +21,99 @@
     </div>
     <!-- Breadcrumb Form Section Begin -->
 
-    <br/>
-    <h2 align="center">欢迎管理员 {{ current_user.username }} 进入管理后台</h2>
-    <br/>
-    <h3 align="center">祝您节日快乐！</h3>
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="main col-xl-8 col-lg-9 col-md-10 col-sm-11 col-12">
+                <br>
+                <h2 align="center">欢迎管理员 {{ current_user.username }} 进入管理后台</h2>
+                <br>
+                <h3 class="text-center">今天注册总人数：{{ today_member_num }}</h3>
+                <br>
+                <div id="pie1" style="width: auto; height:600px;"></div>
+                <div id="line1" style="width: auto; height:400px;"></div>
+                <h3 class="text-center">今天订单数：{{ today_order_num }}，完成交易额：{{ today_order_total }}</h3>
+                <br>
+                <div id="pie2" style="width: auto; height:600px;"></div>
+                <div id="line2" style="width: auto; height:400px;"></div>
+                <div id="bar" style="width: auto; height:500px;"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var chart1 = echarts.init(document.getElementById('pie1'), 'white', {renderer: 'canvas'});
+        var chart2 = echarts.init(document.getElementById('line1'), 'white', {renderer: 'canvas'});
+        var chart3 = echarts.init(document.getElementById('pie2'), 'white', {renderer: 'canvas'});
+        var chart4 = echarts.init(document.getElementById('line2'), 'white', {renderer: 'canvas'});
+        var chart5 = echarts.init(document.getElementById('bar'), 'white', {renderer: 'canvas'});
+        $(
+            function () {
+                pie1Data(chart1);
+                line1Data(chart2);
+                pie2Data(chart3);
+                line2Data(chart4);
+                barData(chart5);
+                setInterval(pie1Data, 300000);
+                setInterval(line1Data, 300000);
+                setInterval(pie2Data, 300000);
+                setInterval(line2Data, 300000);
+                setInterval(barData, 300000);
+            }
+        );
+
+        function pie1Data() {
+            $.ajax({
+                type: "GET",
+                url: "{{ url_for('admin.member_chart') }}",
+                dataType: 'json',
+                success: function (result) {
+                    chart1.setOption(result);
+                }
+            });
+        }
+
+        function line1Data() {
+            $.ajax({
+                type: "GET",
+                url: "{{ url_for('admin.member7_chart') }}",
+                dataType: 'json',
+                success: function (result) {
+                    chart2.setOption(result);
+                }
+            });
+        }
+
+        function pie2Data() {
+            $.ajax({
+                type: "GET",
+                url: "{{ url_for('admin.order_chart') }}",
+                dataType: 'json',
+                success: function (result) {
+                    chart3.setOption(result);
+                }
+            });
+        }
+
+        function line2Data() {
+            $.ajax({
+                type: "GET",
+                url: "{{ url_for('admin.order7_chart') }}",
+                dataType: 'json',
+                success: function (result) {
+                    chart4.setOption(result);
+                }
+            });
+        }
+
+        function barData() {
+            $.ajax({
+                type: "GET",
+                url: "{{ url_for('admin.order7_total_chart') }}",
+                dataType: 'json',
+                success: function (result) {
+                    chart5.setOption(result);
+                }
+            });
+        }
+    </script>
     <br/>
 {% endblock %}

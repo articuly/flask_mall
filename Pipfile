@@ -41,6 +41,8 @@ simplejson = "*"
 flask-wxpay-plus = "*"
 mysql-connector-python = "*"
 email-validator = "*"
+pyecharts = "*"
+pandas = "*"
 
 [requires]
 python_version = "3.7"
