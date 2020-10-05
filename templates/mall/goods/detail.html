@@ -65,16 +65,16 @@
                             <div class="product-details">
                                 <div class="pd-title">
                                     <h3>{{ goods.goods_title }}<small>{{ goods.subhead }}</small></h3>
-                                    {#                                    <a href="#" class="heart-icon"><i class="icon_heart_alt"></i></a>#}
+                                    {#<a href="#" class="heart-icon"><i class="icon_heart_alt"></i></a>#}
                                 </div>
                                 <br>
                                 <div class="pd-desc">
                                     <h4>优惠价：{{ goods.price }}元</h4>
                                 </div>
                                 <div class="quantity">
-                                    {#                                    <div class="pro-qty">#}
-                                    {#                                        <input type="text" value="1">#}
-                                    {#                                    </div>#}
+                                    {#<div class="pro-qty">#}
+                                    {#<input type="text" value="1">#}
+                                    {#</div>#}
                                     <button class="primary-btn pd-cart cart-btn"
                                             data-url="{{ url_for("member.add_cart", goods_id=goods.goods_id) }}">加入购物车
                                     </button>
@@ -204,9 +204,9 @@
                             <div class="product-item">
                                 <div class="pi-pic" style="height: 250px">
                                     <img src="/uploads/{{ item.thumb }}" alt="">
-                                    <!--                            <div class="icon">-->
-                                    <!--                                <i class="icon_heart_alt"></i>-->
-                                    <!--                            </div>-->
+                                    <!--<div class="icon">-->
+                                    <!--<i class="icon_heart_alt"></i>-->
+                                    <!--</div>-->
                                     <ul>
                                         <li class="w-icon active"><a><i class="icon_bag_alt"></i></a></li>
                                         <li class="quick-view">
@@ -233,6 +233,7 @@
         csrf_token = '{{ csrf_token() }}'
         pic_array = {{ goods.main_pic | safe }}
             $(function () {
+                // 加载缩略图
                 pic_array.forEach(function (obj) {
                     img = $("<img src='/uploads/" + obj + "' />")
                     $(".thumbs").append(img)

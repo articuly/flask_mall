@@ -60,16 +60,10 @@
                     {{ form.thumb }}
                     {{ dropzone.create(action="admin.upload_thumb") }}
                 </div>
-
-
                 <div class="form-group">
-
                     {{ form.body.label }}
-
                     {{ form.body }}
                 </div>
-
-
                 <div class="form-group">
                     <button class="btn btn-primary">添加</button>
                 </div>
@@ -78,9 +72,9 @@
     </div>
     <script src="{{ url_for('static', filename="ckeditor/ckeditor.js") }}"></script>
 
+    {# 加载插件 #}
     {% include "admin/goods/dropzone.html" %}
     {{ ckeditor.config(name='body', height=500, toolbar="full") }}
-
 
     <script type="text/javascript">
         var pic_array = []
@@ -90,6 +84,7 @@
         var parent_id = 0
         var tips = $("#tips")
 
+        // 发送新建商品
         function add_new_goods() {
             cate_id = parent_id
             title = $('#title').val()
@@ -129,13 +124,13 @@
             })
         }
 
+        // 点击添加后，重新加载分类菜单
         $(function () {
             // var myDropzone = new Dropzone("#myDropzone",{})
             $('.btn').on('click', add_new_goods)
             category_url = "{{ url_for("admin.get_cate") }}"
             load_cate(0)
         })
-
     </script>
     <script type="text/javascript" src="{{ url_for("static" ,filename="js/category.js") }}"></script>
 {% endblock %}

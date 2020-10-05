@@ -67,10 +67,7 @@
     <script type="text/javascript">
         var csrf_token = "{{ csrf_token() }}"
 
-        /**
-         * 删除分类
-         *
-         */
+        // 删除分类
         function delete_area(place_id) {
             {# if (!confirm("删除分类同时会删除商品")) { #}
             {#    return false} #}
@@ -87,10 +84,7 @@
                         document.getElementById('li_' + place_id).remove()
                     }
                 }
-
             })
-
         }
     </script>
-
 {% endblock %}

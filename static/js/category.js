@@ -1,3 +1,4 @@
+// 创建多级菜单
 function createSelect(data) {
     var category_select = $("#category_select")
     var select = document.createElement("select")
@@ -16,8 +17,8 @@ function createSelect(data) {
     category_select.append(select)
 }
 
+// 读取多级菜单
 function load_cate(parent_id = 0) {
-
     $.ajax({
         url: category_url + "?parent_id=" + parent_id,
         method: "get",
@@ -25,9 +26,7 @@ function load_cate(parent_id = 0) {
             if (data.length > 0) {
                 createSelect(data)
             }
-
         }
-
     })
 }
 

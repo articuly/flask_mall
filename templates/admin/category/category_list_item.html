@@ -1,5 +1,4 @@
 {% macro category_items(cates) %}
-
     {% for cate in cates %}
         <li class="cate_li" id="li_{{ cate.id }}">{{ cate.name }}
             <a class="edit-btn"
@@ -13,5 +12,4 @@
             {% endif %}
         </li>
     {% endfor %}
-
 {% endmacro %}

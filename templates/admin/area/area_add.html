@@ -66,6 +66,7 @@
         var order_id_input = document.querySelector("#place_order")
         var btn = document.querySelector(".btn")
 
+        // 建立多级菜单
         function createSelect(data, level = 0) {
             var select = document.createElement("select")
             select.options.add(new Option("请选择所属类别", 0))
@@ -85,8 +86,8 @@
             place_select.appendChild(select)
         }
 
+        // 读取多级菜单
         function load_area(parent_id = 0) {
-
             $.ajax({
                 url: "{{ url_for("admin.get_area") }}?parent_id=" + parent_id,
                 method: "get",
@@ -94,12 +95,11 @@
                     if (data.length > 0) {
                         createSelect(data)
                     }
-
                 }
-
             })
         }
 
+        // 发送新建地区
         function add_new_area() {
             place_name = $("#place_name").val()
             place_order = $("#place_order").val()
@@ -124,7 +124,6 @@
                     }
                 }
             })
-
         }
 
         btn.onclick = add_new_area

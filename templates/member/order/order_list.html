@@ -137,12 +137,11 @@
         </div>
     </div>
     <script type="text/javascript">
-        /**
-         * 修改
-         */
+        // 修改
         var csrf_token = "{{ csrf_token() }}"
         var parent_id = 0
 
+        // 搜索
         $(function () {
             $(".search-btn").on("click", function (event) {
                 if (!$("#category_id").val()) {
@@ -152,10 +151,7 @@
             })
         })
 
-        /**
-         * 删除
-         *
-         */
+        // 删除
         $(function () {
             $(".delete-btn").on("click", function (event) {
                 var target = $(event.target);
@@ -183,9 +179,7 @@
             })
         })
 
-        /**
-         * 检索
-         */
+        // 检索
         $("#search").on('click', function () {
             link_url = "{{ url_for(".manage_orders") }}/" + parent_id
             $(".mainbody").load($.trim(link_url))

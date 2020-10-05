@@ -94,8 +94,8 @@
     </div>
     <br>
 
-    <script>
-
+    <script type="text/javascript">
+        // 选择地址，自动填入表单
         $(document).ready(function () {
             $('input[type=radio][name="addresses"]').change(function () {
                 var addr = $('input:radio[name="addresses"]:checked').val()
@@ -108,6 +108,8 @@
                 $('#address').val(address)
             })
         })
+
+        // 订单结算
         $('.btn').on('click', function () {
             console.log("click")
             $("[name='payment']").val($(this).data('payment'))

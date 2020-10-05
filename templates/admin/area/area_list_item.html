@@ -1,5 +1,4 @@
 {% macro area_items(areas) %}
-
     {% for area in areas %}
         <li class="area_li" id="li_{{ area.place_id }}">{{ area.place_name }}
             <a class="edit-btn"
@@ -12,6 +11,5 @@
                 </ul>
             {% endif %}
         </li>
-
     {% endfor %}
 {% endmacro %}

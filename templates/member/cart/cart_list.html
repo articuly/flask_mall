@@ -81,6 +81,7 @@
                 $("#total").html(total)
             }
 
+            // 删除商品
             $(".delete-btn").on("click", function (e) {
                 if (!confirm("确认删除吗")) {
                     {#console.log($(this).parent().parent().remove())#}
@@ -103,6 +104,7 @@
                 })
             })
 
+            // 修改商品数量后，发送到后台
             $("input[type='number']").on("change", function (e) {
                 obj = $(e.target)
                 $.ajax({
