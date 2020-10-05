@@ -3,18 +3,21 @@ try:
     from urlparse import urlparse, urljoin
 except ImportError:
     from urllib.parse import urlparse, urljoin
+
 import os
-from datetime import date
+from datetime import date, datetime
 import uuid
-
+import random
+import time
 from PIL import Image
-
 from flask import current_app, jsonify, request, redirect, send_from_directory, url_for
 from flask_ckeditor import upload_fail, upload_success
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from itsdangerous import BadSignature, SignatureExpired
 from xp_mall.extensions import db
 from xp_mall.models.category import GoodsCategory
+from xp_mall.models.member import Member
+from xp_mall.models.order import Order
 
 
 def is_safe_url(target):
@@ -202,3 +205,61 @@ def get_pay_obj(payment):
     :return:
     '''
     return current_app.extensions[payment]
+
+
+def add_random_member(n):
+    '''
+    添加N个随机用户
+    :param n:
+    :return:
+    '''
+    words = list('abcdefghijklmnopqrstuvwxyz')
+    emails = ['@qq.com', '@gmail.com', '@126.com', '@163.com', '@hotmail.com', '@sohu.com', '@sogou.com']
+    stime = datetime.strptime('2020-09-28', "%Y-%m-%d")
+    etime = datetime.strptime('2020-10-31', "%Y-%m-%d")
+    for i in range(n):
+        random.shuffle(words)
+        username = ''.join(words[:6])
+        reg_sex = str(random.randint(0, 2))
+        email = username + random.choice(emails)
+        # 随机注册时间
+        reg_date = random.random() * (etime - stime) + stime
+        member = Member(
+            username=username,
+            email=email,
+            reg_sex=reg_sex,
+            reg_date=reg_date,
+        )
+        member.set_password('123654')
+        db.session.add(member)
+    db.session.commit()
+
+
+def add_random_order(n):
+    '''
+    添加N张随机订单
+    :param n:
+    :return:
+    '''
+    stime = datetime.strptime('2020-09-28', "%Y-%m-%d")
+    etime = datetime.strptime('2020-10-31', "%Y-%m-%d")
+    subject = '测试商城订单'
+    for i in range(n):
+        total_price = random.randint(1000, 10000)
+        status = random.choices(['0', '1', '2', '3', '4'], weights=(0.1, 0.3, 0.2, 0.3, 0.1), k=1)[0]
+        buyer = str(random.randint(100, 1000))
+        payment = random.choices(['wxpay', 'alipay'], weights=[0.2, 0.8], k=1)[0]
+        createTime = random.random() * (etime - stime) + stime
+        order_no = str(time.strftime('%Y%m%d%H%M%S', time.localtime(createTime.timestamp()))) + str(
+            time.time()).replace('.', '')[-7:]
+        order = Order(
+            order_no=order_no,
+            subject=subject,
+            total_price=total_price,
+            status=status,
+            buyer=buyer,
+            payment=payment,
+            createTime=createTime
+        )
+        db.session.add(order)
+    db.session.commit()
