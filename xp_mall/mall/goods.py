@@ -77,10 +77,10 @@ def show_goods(category_id, goods_id):
                 cart_total = cart_total + item.goods.price * item.amount
             print(cart_amount, cart_total)
             return render_template('mall/goods/detail.html', goods=goods, category=categories,
-                                   category_tree=category_tree, cart_total=cart_total)
+                                   category_tree=category_tree, cart_amount=cart_amount, cart_total=cart_total)
         else:
             return render_template('mall/goods/detail.html', goods=goods, category=categories,
-                                   category_tree=category_tree, cart_total=cart_total)
+                                   category_tree=category_tree, cart_amount=cart_amount, cart_total=cart_total)
     # 非登陆用户，则不传出购物车信息
     return render_template('mall/goods/detail.html', goods=goods, category=categories, category_tree=category_tree)
 
