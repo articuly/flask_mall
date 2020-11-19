@@ -215,8 +215,8 @@ def add_random_member(n):
     '''
     words = list('abcdefghijklmnopqrstuvwxyz')
     emails = ['@qq.com', '@gmail.com', '@126.com', '@163.com', '@hotmail.com', '@sohu.com', '@sogou.com']
-    stime = datetime.strptime('2020-09-28', "%Y-%m-%d")
-    etime = datetime.strptime('2020-10-31', "%Y-%m-%d")
+    stime = datetime.strptime('2020-11-1', "%Y-%m-%d")
+    etime = datetime.strptime('2020-12-31', "%Y-%m-%d")
     for i in range(n):
         random.shuffle(words)
         username = ''.join(words[:6])
@@ -241,8 +241,8 @@ def add_random_order(n):
     :param n:
     :return:
     '''
-    stime = datetime.strptime('2020-09-28', "%Y-%m-%d")
-    etime = datetime.strptime('2020-10-31', "%Y-%m-%d")
+    stime = datetime.strptime('2020-11-1', "%Y-%m-%d")
+    etime = datetime.strptime('2020-12-31', "%Y-%m-%d")
     subject = '测试商城订单'
     for i in range(n):
         total_price = random.randint(1000, 10000)

@@ -216,3 +216,4 @@ if __name__ == "__main__":
 
 # 管理员账号为articuly, admin。普通账号为linsl, noone, someone, anyone, everyone
 # 密码统一为123654
+# 数据库为本机mysql
